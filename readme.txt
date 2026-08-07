@@ -46,6 +46,24 @@ The REST API, filters, and WP-CLI commands are documented in the plugin's README
 
    `wp loupe-cross-site reindex`
 
+== The search block ==
+
+The plugin ships a ready-to-use Cross-Site Search block. Add it to any page or post on the hub site (or a same-origin site) and visitors can search the whole network from the front end.
+
+The block provides:
+
+* Debounced search-as-you-type with a clear button and loading state.
+* Site and post-type facets (checkboxes with live counts) that filter results, with a "Clear filters" control.
+* Sorting: Relevance, Newest, Oldest, or Title.
+* Highlighted, cropped snippets for matched terms.
+* Per-result site badge, post-type label, and date.
+* Pagination and a result count with query timing.
+* Empty, loading, and error states with ARIA live regions.
+
+Every part is configurable from the block inspector: heading, placeholder, results per page (1-50), which facets to show, default sort, and excerpt/date/highlighting toggles.
+
+On subdomain networks the block makes a cross-origin request to the hub site; place it on the hub site, use a subdirectory network, or add CORS headers. To build your own UI instead, query the REST endpoint directly.
+
 == Frequently Asked Questions ==
 
 = Does this work on a single-site install? =

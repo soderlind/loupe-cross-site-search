@@ -60,6 +60,44 @@ in [`CONTEXT.md`](CONTEXT.md).
 After changing participation, language, or post types, run
 `wp loupe-cross-site reindex`.
 
+## Search block
+
+The plugin ships a ready-to-use **Cross-Site Search** block. Add it to any page
+or post on the hub site (or any same-origin site) and visitors can search the
+whole network from the front end — no code required.
+
+**Features**
+
+- Debounced search-as-you-type with a clear button and loading state.
+- **Facets** for site and post type (checkboxes with live counts) that filter
+  the results; a "Clear filters" control appears when any are active.
+- **Sorting**: Relevance, Newest, Oldest, or Title.
+- **Highlighting** of matched terms with cropped snippets (`<mark>`), sanitized
+  before rendering.
+- Per-result **site badge, post-type label, and date**.
+- **Pagination** and a result count with query timing.
+- Empty, loading, and error states with ARIA live regions.
+
+**Inspector settings**
+
+| Setting | Default | Description |
+| --- | --- | --- |
+| Heading | — | Optional heading above the search box |
+| Placeholder | `Search…` | Search input placeholder |
+| Results per page | `10` | Between 1 and 50 |
+| Site filter | on | Show the site facet |
+| Post type filter | on | Show the post-type facet |
+| Sorting | on | Show the sort control |
+| Default sort | Relevance | Relevance / Newest / Oldest / Title |
+| Show excerpt | on | Render highlighted snippets |
+| Show date | on | Show each result's date |
+| Highlight matches | on | Request and render match highlighting |
+
+> On **subdomain** multisite the block makes a cross-origin request to the hub;
+> place it on the hub site, use a subdirectory network, or add CORS headers.
+> Prefer building your own UI? Query the REST API directly — see the
+> [developer guide](docs/developer.md).
+
 ## Developer documentation
 
 The REST API, search block, WP-CLI commands, extension filters, and test
