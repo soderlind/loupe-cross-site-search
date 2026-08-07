@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "loupe-cross-site/search",
+	"version": "0.2.0",
+	"title": "Cross-Site Search",
+	"category": "widgets",
+	"icon": "search",
+	"description": "A complete search experience across all participating sites in the network: facets, sorting, highlighting, and pagination.",
+	"keywords": [ "search", "multisite", "network", "loupe" ],
+	"textdomain": "loupe-cross-site-search",
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": { "margin": true, "padding": true },
+		"color": { "background": true, "text": true }
+	},
+	"attributes": {
+		"heading": { "type": "string", "default": "" },
+		"placeholder": { "type": "string", "default": "Search…" },
+		"perPage": { "type": "number", "default": 10 },
+		"showSiteFilter": { "type": "boolean", "default": true },
+		"showTypeFilter": { "type": "boolean", "default": true },
+		"showSort": { "type": "boolean", "default": true },
+		"defaultSort": { "type": "string", "default": "relevance" },
+		"showExcerpt": { "type": "boolean", "default": true },
+		"showDate": { "type": "boolean", "default": true },
+		"highlight": { "type": "boolean", "default": true }
+	},
+	"editorScript": "file:./index.js",
+	"viewScript": "file:./view.js",
+	"style": "file:./style.css"
+}

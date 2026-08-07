@@ -1,0 +1,6 @@
+/vendor/
+/node_modules/
+/.phpunit.cache/
+/package-lock.json
+/composer.lock
+/.playwright-mcp/

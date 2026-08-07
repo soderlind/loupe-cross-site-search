@@ -1,0 +1,15 @@
+{
+	"name": "loupe-cross-site-search",
+	"version": "0.1.0",
+	"description": "Cross-site search add-on for Loupe Search (WordPress multisite).",
+	"private": true,
+	"license": "GPL-2.0-or-later",
+	"scripts": {
+		"test": "vitest run",
+		"test:watch": "vitest"
+	},
+	"devDependencies": {
+		"jsdom": "^25.0.0",
+		"vitest": "^2.1.0"
+	}
+}

@@ -1,0 +1,44 @@
+{
+	"name": "soderlind/loupe-cross-site-search",
+	"type": "wordpress-plugin",
+	"description": "Cross-site search for WordPress multisite, built on top of Loupe Search. Maintains one combined Loupe index across participating sites and exposes a search endpoint on a hub site.",
+	"keywords": [
+		"wordpress-plugin",
+		"multisite",
+		"search-engine",
+		"loupe",
+		"cross-site"
+	],
+	"homepage": "https://github.com/soderlind/loupe-cross-site-search",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Per Soderlind",
+			"email": "per@soderlind.no"
+		}
+	],
+	"require": {
+		"php": ">=8.3"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^12.5",
+		"brain/monkey": "^2.6",
+		"pestphp/pest": "^4.5"
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Soderlind\\Plugin\\LoupeCrossSiteSearch\\Tests\\": "tests/"
+		}
+	},
+	"config": {
+		"platform": {
+			"php": "8.3.0"
+		},
+		"allow-plugins": {
+			"pestphp/pest-plugin": true
+		}
+	},
+	"scripts": {
+		"test": "pest"
+	}
+}
