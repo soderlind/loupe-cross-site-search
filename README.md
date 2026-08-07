@@ -66,7 +66,7 @@ The plugin ships a ready-to-use **Cross-Site Search** block. Add it to any page
 or post on the hub site (or any same-origin site) and visitors can search the
 whole network from the front end — no code required.
 
-**Features**
+### Features
 
 - Debounced search-as-you-type with a clear button and loading state.
 - **Facets** for site and post type (checkboxes with live counts) that filter
@@ -78,7 +78,7 @@ whole network from the front end — no code required.
 - **Pagination** and a result count with query timing.
 - Empty, loading, and error states with ARIA live regions.
 
-**Inspector settings**
+### Inspector settings
 
 | Setting | Default | Description |
 | --- | --- | --- |
