@@ -65,6 +65,22 @@ Filterable / sortable / facetable fields are limited to `post_type`, `blog_id`,
 }
 ```
 
+## Network settings (admin)
+
+The Network Admin → Settings → Cross-Site Search screen is a WordPress React app
+([admin/settings.js](../admin/settings.js), `@wordpress/components`) backed by a
+private REST endpoint:
+
+```text
+GET  /wp-json/loupe-cross-site/v1/settings
+POST /wp-json/loupe-cross-site/v1/settings
+```
+
+Both require the `manage_network_options` capability. `GET` returns the current
+settings plus the site list and available public post types; `POST` accepts the
+settings object, sanitizes it ([Settings::sanitize()](../includes/class-settings.php)),
+and persists it as the `loupe_cross_site_settings` network option.
+
 ## Search block
 
 The plugin ships a complete **Cross-Site Search** block (`loupe-cross-site/search`)

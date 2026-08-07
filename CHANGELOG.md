@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Network settings screen rebuilt as a WordPress React app
+  (`@wordpress/components`) backed by a `manage_network_options` REST endpoint
+  (`GET`/`POST /wp-json/loupe-cross-site/v1/settings`): card layout, searchable
+  site allow/block list, and inline save with a success notice.
+
 ## [0.2.0] - 2026-08-08
 
 Initial public release.

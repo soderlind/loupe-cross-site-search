@@ -36,9 +36,8 @@ in [`CONTEXT.md`](CONTEXT.md).
 
 ## Installation
 
-1. Install and network-activate **Loupe Search**.
-2. Copy this plugin to `wp-content/plugins/loupe-cross-site-search` and
-   **network-activate** it.
+1. Download [`loupe-cross-site-search.zip`](https://github.com/soderlind/loupe-cross-site-search/releases/latest/download/loupe-cross-site-search.zip)
+2. Go to **Network Admin → Plugins** and upload `loupe-cross-site-search.zip`, then activate the plugin network-wide.
 3. Go to **Network Admin → Settings → Cross-Site Search** and configure the hub
    site, participation, language, and post types.
 4. Build the combined index:

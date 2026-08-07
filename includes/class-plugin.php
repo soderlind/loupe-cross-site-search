@@ -46,6 +46,11 @@ class Plugin {
 		// Site lifecycle purge/enroll runs network-wide (context-free).
 		new Site_Lifecycle();
 
+		// Network settings REST endpoints (not is_admin(), so register unconditionally).
+		add_action( 'rest_api_init', function (): void {
+			( new Settings_REST() )->register_routes();
+		} );
+
 		// Register the example block on every site (it queries the hub cross-site).
 		new Block();
 

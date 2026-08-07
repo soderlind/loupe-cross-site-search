@@ -42,6 +42,7 @@ require_once LCSS_PATH . 'includes/class-document-builder.php';
 require_once LCSS_PATH . 'includes/class-mirror.php';
 require_once LCSS_PATH . 'includes/class-site-lifecycle.php';
 require_once LCSS_PATH . 'includes/class-rest-controller.php';
+require_once LCSS_PATH . 'includes/class-settings-rest.php';
 require_once LCSS_PATH . 'includes/class-block.php';
 require_once LCSS_PATH . 'includes/class-plugin.php';
 

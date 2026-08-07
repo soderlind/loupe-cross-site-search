@@ -23,7 +23,6 @@ class Settings {
 
 	public function __construct() {
 		add_action( 'network_admin_menu', [ $this, 'add_menu' ] );
-		add_action( 'network_admin_edit_' . self::OPTION, [ $this, 'save' ] );
 	}
 
 	/**
@@ -90,104 +89,49 @@ class Settings {
 		);
 	}
 
+	/**
+	 * Sanitize a raw settings payload into the stored shape.
+	 *
+	 * @param array<string,mixed> $input
+	 * @return array{hub_blog_id:int,mode:string,sites:int[],language:string,post_types:string[]}
+	 */
+	public static function sanitize( array $input ): array {
+		$mode = isset( $input['mode'] ) ? sanitize_key( (string) $input['mode'] ) : 'all';
+		return [
+			'hub_blog_id' => isset( $input['hub_blog_id'] ) ? (int) $input['hub_blog_id'] : get_main_site_id(),
+			'mode'        => in_array( $mode, [ 'all', 'allowlist', 'blocklist' ], true ) ? $mode : 'all',
+			'sites'       => isset( $input['sites'] ) ? array_values( array_unique( array_map( 'intval', (array) $input['sites'] ) ) ) : [],
+			'language'    => isset( $input['language'] ) ? strtolower( substr( (string) preg_replace( '/[^a-z]/i', '', (string) $input['language'] ), 0, 2 ) ) : 'en',
+			'post_types'  => isset( $input['post_types'] ) ? array_values( array_filter( array_map( 'sanitize_key', (array) $input['post_types'] ) ) ) : [ 'post', 'page' ],
+		];
+	}
+
 	public function render(): void {
 		if ( ! current_user_can( 'manage_network_options' ) ) {
 			return;
 		}
-		$settings   = self::get();
-		$sites      = get_sites( [ 'number' => 0, 'orderby' => 'path' ] );
-		$post_types = get_post_types( [ 'public' => true ], 'objects' );
-		$action     = add_query_arg( 'action', self::OPTION, network_admin_url( 'edit.php' ) );
-		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Loupe Cross-Site Search', 'loupe-cross-site-search' ); ?></h1>
-			<?php if ( isset( $_GET['updated'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Settings saved.', 'loupe-cross-site-search' ); ?></p></div>
-			<?php endif; ?>
-			<form method="post" action="<?php echo esc_url( $action ); ?>">
-				<?php wp_nonce_field( self::OPTION . '-save', self::OPTION . '_nonce' ); ?>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><label for="lcss_hub"><?php esc_html_e( 'Hub site', 'loupe-cross-site-search' ); ?></label></th>
-						<td>
-							<select name="hub_blog_id" id="lcss_hub">
-								<?php foreach ( $sites as $site ) : ?>
-									<option value="<?php echo (int) $site->blog_id; ?>" <?php selected( (int) $site->blog_id, $settings['hub_blog_id'] ); ?>>
-										<?php echo esc_html( $site->blogname . ' (' . untrailingslashit( $site->domain . $site->path ) . ')' ); ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-							<p class="description"><?php esc_html_e( 'The site that exposes the cross-site search REST endpoint.', 'loupe-cross-site-search' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Participation', 'loupe-cross-site-search' ); ?></th>
-						<td>
-							<fieldset>
-								<label><input type="radio" name="mode" value="all" <?php checked( 'all', $settings['mode'] ); ?>> <?php esc_html_e( 'All public sites', 'loupe-cross-site-search' ); ?></label><br>
-								<label><input type="radio" name="mode" value="allowlist" <?php checked( 'allowlist', $settings['mode'] ); ?>> <?php esc_html_e( 'Only the sites selected below (allowlist)', 'loupe-cross-site-search' ); ?></label><br>
-								<label><input type="radio" name="mode" value="blocklist" <?php checked( 'blocklist', $settings['mode'] ); ?>> <?php esc_html_e( 'All public sites except those selected below (blocklist)', 'loupe-cross-site-search' ); ?></label>
-							</fieldset>
-							<p style="margin-top:8px;">
-								<select name="sites[]" multiple size="6" style="min-width:320px;">
-									<?php foreach ( $sites as $site ) : ?>
-										<option value="<?php echo (int) $site->blog_id; ?>" <?php echo in_array( (int) $site->blog_id, $settings['sites'], true ) ? 'selected' : ''; ?>>
-											<?php echo esc_html( $site->blogname . ' (' . untrailingslashit( $site->domain . $site->path ) . ')' ); ?>
-										</option>
-									<?php endforeach; ?>
-								</select>
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><label for="lcss_lang"><?php esc_html_e( 'Index language', 'loupe-cross-site-search' ); ?></label></th>
-						<td>
-							<input type="text" name="language" id="lcss_lang" value="<?php echo esc_attr( $settings['language'] ); ?>" size="4" maxlength="2">
-							<p class="description"><?php esc_html_e( 'Two-letter language code used to tokenize the combined index (e.g. en, nb, de).', 'loupe-cross-site-search' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Post types', 'loupe-cross-site-search' ); ?></th>
-						<td>
-							<fieldset>
-								<?php foreach ( $post_types as $pt ) : ?>
-									<label style="display:inline-block;margin-right:12px;">
-										<input type="checkbox" name="post_types[]" value="<?php echo esc_attr( $pt->name ); ?>" <?php echo in_array( $pt->name, $settings['post_types'], true ) ? 'checked' : ''; ?>>
-										<?php echo esc_html( $pt->labels->singular_name . ' (' . $pt->name . ')' ); ?>
-									</label>
-								<?php endforeach; ?>
-							</fieldset>
-							<p class="description"><?php esc_html_e( 'Only these post types are mirrored into the combined index. Reindex after changing.', 'loupe-cross-site-search' ); ?></p>
-						</td>
-					</tr>
-				</table>
-				<?php submit_button(); ?>
-			</form>
-			<p><em><?php esc_html_e( 'After changing participation, language, or post types, run: wp loupe-cross-site reindex', 'loupe-cross-site-search' ); ?></em></p>
-		</div>
-		<?php
+		$this->enqueue_assets();
+		echo '<div class="wrap lcss-settings"><div id="lcss-settings-root"></div>'
+			. '<noscript><p>' . esc_html__( 'The Cross-Site Search settings screen requires JavaScript.', 'loupe-cross-site-search' ) . '</p></noscript></div>';
 	}
 
-	public function save(): void {
-		if ( ! current_user_can( 'manage_network_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to do this.', 'loupe-cross-site-search' ) );
-		}
-		check_admin_referer( self::OPTION . '-save', self::OPTION . '_nonce' );
+	private function enqueue_assets(): void {
+		$base  = LCSS_PATH . 'admin/settings';
+		$asset = file_exists( $base . '.asset.php' )
+			? require $base . '.asset.php'
+			: [ 'dependencies' => [ 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n', 'wp-dom-ready' ], 'version' => LCSS_VERSION ];
 
-		$value = [
-			'hub_blog_id' => isset( $_POST['hub_blog_id'] ) ? (int) $_POST['hub_blog_id'] : get_main_site_id(),
-			'mode'        => isset( $_POST['mode'] ) ? sanitize_key( wp_unslash( $_POST['mode'] ) ) : 'all',
-			'sites'       => isset( $_POST['sites'] ) ? array_map( 'intval', (array) wp_unslash( $_POST['sites'] ) ) : [],
-			'language'    => isset( $_POST['language'] ) ? strtolower( substr( sanitize_key( wp_unslash( $_POST['language'] ) ), 0, 2 ) ) : 'en',
-			'post_types'  => isset( $_POST['post_types'] ) ? array_map( 'sanitize_key', (array) wp_unslash( $_POST['post_types'] ) ) : [ 'post', 'page' ],
-		];
+		wp_enqueue_script( 'lcss-settings', LCSS_URL . 'admin/settings.js', $asset['dependencies'], $asset['version'], true );
+		wp_enqueue_style( 'lcss-settings', LCSS_URL . 'admin/settings.css', [ 'wp-components' ], $asset['version'] );
+		wp_set_script_translations( 'lcss-settings', 'loupe-cross-site-search' );
 
-		update_site_option( self::OPTION, $value );
-
-		wp_safe_redirect( add_query_arg(
-			[ 'page' => 'loupe-cross-site-search', 'updated' => '1' ],
-			network_admin_url( 'settings.php' )
-		) );
-		exit;
+		wp_add_inline_script(
+			'lcss-settings',
+			'window.lcssSettings = ' . wp_json_encode( [
+				'root'  => esc_url_raw( rest_url() ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+			] ) . ';',
+			'before'
+		);
 	}
 }
