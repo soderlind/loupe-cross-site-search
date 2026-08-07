@@ -5,7 +5,7 @@ Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.3
 Requires Plugins: loupe-search
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -74,5 +74,5 @@ The block queries the hub site's endpoint. On subdomain networks this is a cross
 
 == Changelog ==
 
-= 0.1.0 =
+= 0.2.0 =
 * Initial release: combined cross-site index, in-context mirroring, hub REST endpoint with `blog_id` filter/facet, participation controls, WP-CLI reindex/verify/purge, and a complete Cross-Site Search block (facets, sorting, highlighting, pagination).
