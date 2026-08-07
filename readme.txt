@@ -34,7 +34,7 @@ Rather than querying each site's index separately at search time, the add-on mai
 
 **Developer documentation**
 
-The REST API, filters, and WP-CLI commands are documented in the plugin's README.
+The REST API, search block, extension filters, and WP-CLI commands are documented in the [developer guide](https://github.com/soderlind/loupe-cross-site-search/blob/main/docs/developer.md). See also the [architecture overview](https://github.com/soderlind/loupe-cross-site-search/blob/main/docs/architecture.md).
 
 == Installation ==
 
