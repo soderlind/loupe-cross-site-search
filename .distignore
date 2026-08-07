@@ -1,0 +1,38 @@
+# Files and directories excluded from the distributed plugin zip / wp.org payload.
+# Consumed via rsync --exclude-from in the build-zip workflows.
+
+# Version control / CI / editor
+.distignore
+.git/
+.github/
+.gitignore
+.gitattributes
+.editorconfig
+.DS_Store
+.playwright-mcp/
+
+# Linting config (GitHub-only)
+.markdownlint.json
+.markdownlintignore
+
+# Tests
+tests/
+phpunit.xml.dist
+.phpunit.cache/
+
+# JS tooling (the block ships prebuilt, hand-written JS — no build output needed)
+node_modules/
+package.json
+package-lock.json
+vitest.config.js
+
+# Composer: no runtime dependencies, so nothing from here ships.
+composer.json
+composer.lock
+vendor/
+
+# Documentation (GitHub-only; readme.txt is kept for wp.org)
+README.md
+CHANGELOG.md
+CONTEXT.md
+docs/
