@@ -1,0 +1,4 @@
+{
+	"src/cross-site-search/index.js": "build/cross-site-search/index.js",
+	"src/admin/settings.js": "build/admin/settings.js"
+}

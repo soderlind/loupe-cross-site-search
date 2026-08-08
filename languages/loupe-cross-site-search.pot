@@ -1,0 +1,424 @@
+# Copyright (C) 2026 Per Soderlind
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Loupe Cross-Site Search 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/loupe-cross-site-search\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-08T00:47:06+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: loupe-cross-site-search\n"
+
+#. Plugin Name of the plugin
+#: loupe-cross-site-search.php
+#: src/admin/settings.js:150
+msgid "Loupe Cross-Site Search"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: loupe-cross-site-search.php
+msgid "https://github.com/soderlind/loupe-cross-site-search"
+msgstr ""
+
+#. Description of the plugin
+#: loupe-cross-site-search.php
+msgid "Cross-site search for WordPress multisite. Maintains one combined Loupe index across participating sites and exposes a search endpoint on a designated hub site. Add-on to Loupe Search."
+msgstr ""
+
+#. Author of the plugin
+#: loupe-cross-site-search.php
+msgid "Per Soderlind"
+msgstr ""
+
+#. Author URI of the plugin
+#: loupe-cross-site-search.php
+msgid "https://soderlind.no"
+msgstr ""
+
+#: includes/class-block.php:46
+msgid "Search…"
+msgstr ""
+
+#: includes/class-block.php:56
+msgid "Sites"
+msgstr ""
+
+#: includes/class-block.php:57
+msgid "Types"
+msgstr ""
+
+#: includes/class-block.php:58
+msgid "Sort by"
+msgstr ""
+
+#: includes/class-block.php:59
+#: src/cross-site-search/index.js:75
+msgid "Relevance"
+msgstr ""
+
+#: includes/class-block.php:60
+#: src/cross-site-search/index.js:76
+msgid "Newest"
+msgstr ""
+
+#: includes/class-block.php:61
+#: src/cross-site-search/index.js:77
+msgid "Oldest"
+msgstr ""
+
+#: includes/class-block.php:62
+#: src/cross-site-search/index.js:78
+msgid "Title"
+msgstr ""
+
+#: includes/class-block.php:63
+msgid "Searching…"
+msgstr ""
+
+#. translators: %s: search query
+#: includes/class-block.php:65
+#, php-format
+msgid "No results for “%s”."
+msgstr ""
+
+#. translators: 1: result count, 2: search query, 3: time in milliseconds
+#: includes/class-block.php:67
+#, php-format
+msgid "%1$d results for “%2$s” in %3$d ms"
+msgstr ""
+
+#. translators: 1: search query, 2: time in milliseconds
+#: includes/class-block.php:69
+#, php-format
+msgid "1 result for “%1$s” in %2$d ms"
+msgstr ""
+
+#: includes/class-block.php:70
+msgid "Search failed. Please try again."
+msgstr ""
+
+#: includes/class-block.php:71
+msgid "Clear search"
+msgstr ""
+
+#: includes/class-block.php:72
+msgid "Clear filters"
+msgstr ""
+
+#: includes/class-block.php:73
+msgid "Previous"
+msgstr ""
+
+#: includes/class-block.php:74
+msgid "Next"
+msgstr ""
+
+#: includes/class-plugin.php:86
+msgid "Loupe Cross-Site Search requires a WordPress multisite network."
+msgstr ""
+
+#: includes/class-plugin.php:92
+msgid "Loupe Cross-Site Search requires the Loupe Search plugin to be active."
+msgstr ""
+
+#: includes/class-rest-controller.php:51
+msgid "Request body must be valid JSON."
+msgstr ""
+
+#: includes/class-rest-controller.php:56
+#: includes/class-rest-controller.php:116
+msgid "Missing or empty query parameter \"q\"."
+msgstr ""
+
+#: includes/class-rest-controller.php:62
+msgid "page.size must be between 1 and 100."
+msgstr ""
+
+#: includes/class-rest-controller.php:67
+#: includes/class-rest-controller.php:124
+msgid "Requested page is too deep."
+msgstr ""
+
+#: includes/class-rest-controller.php:149
+msgid "postTypes must be \"all\" or an array of slugs."
+msgstr ""
+
+#: includes/class-rest-controller.php:154
+msgid "None of the requested post types are covered by cross-site search."
+msgstr ""
+
+#: includes/class-rest-controller.php:166
+msgid "Malformed filter node."
+msgstr ""
+
+#: includes/class-rest-controller.php:189
+msgid "Unknown filter node type."
+msgstr ""
+
+#. translators: %s: field name
+#: includes/class-rest-controller.php:201
+#, php-format
+msgid "Field \"%s\" is not filterable."
+msgstr ""
+
+#: includes/class-rest-controller.php:225
+msgid "in/nin require a non-empty array."
+msgstr ""
+
+#: includes/class-rest-controller.php:233
+msgid "between requires min and max."
+msgstr ""
+
+#. translators: %s: operator
+#: includes/class-rest-controller.php:241
+#, php-format
+msgid "Unsupported operator \"%s\"."
+msgstr ""
+
+#: includes/class-settings-rest.php:63
+msgid "Invalid settings payload."
+msgstr ""
+
+#: includes/class-settings-rest.php:79
+msgid "Action Scheduler is not available."
+msgstr ""
+
+#: includes/class-settings.php:84
+#: includes/class-settings.php:85
+msgid "Cross-Site Search"
+msgstr ""
+
+#: includes/class-settings.php:115
+msgid "The Cross-Site Search settings screen requires JavaScript."
+msgstr ""
+
+#: src/admin/settings.js:68
+msgid "Failed to load settings."
+msgstr ""
+
+#. translators: %d: number of sites queued
+#: src/admin/settings.js:95
+#, js-format
+msgid "Reindex queued for %d sites. It runs in the background."
+msgstr ""
+
+#: src/admin/settings.js:100
+msgid "Could not start the reindex."
+msgstr ""
+
+#: src/admin/settings.js:121
+msgid "Settings saved. Run “wp loupe-cross-site reindex” to apply changes to the index."
+msgstr ""
+
+#: src/admin/settings.js:123
+msgid "Save failed."
+msgstr ""
+
+#: src/admin/settings.js:128
+msgid "Loading settings…"
+msgstr ""
+
+#: src/admin/settings.js:131
+msgid "No data."
+msgstr ""
+
+#. translators: %d: number of participating sites
+#: src/admin/settings.js:153
+#, js-format
+msgid "%d sites currently participate in cross-site search."
+msgstr ""
+
+#: src/admin/settings.js:160
+msgid "Hub site"
+msgstr ""
+
+#: src/admin/settings.js:161
+msgid "The search endpoint POST /wp-json/loupe-cross-site/v1/search is registered only on this site."
+msgstr ""
+
+#: src/admin/settings.js:163
+msgid "Site that exposes the search endpoint"
+msgstr ""
+
+#: src/admin/settings.js:173
+msgid "Participation"
+msgstr ""
+
+#: src/admin/settings.js:174
+msgid "Choose which sites are searchable."
+msgstr ""
+
+#: src/admin/settings.js:181
+msgid "All public sites"
+msgstr ""
+
+#: src/admin/settings.js:182
+msgid "Only selected sites (allowlist)"
+msgstr ""
+
+#: src/admin/settings.js:183
+msgid "All public sites except selected (blocklist)"
+msgstr ""
+
+#: src/admin/settings.js:193
+msgid "Filter sites…"
+msgstr ""
+
+#: src/admin/settings.js:202
+msgid "not public"
+msgstr ""
+
+#: src/admin/settings.js:213
+msgid "Index language"
+msgstr ""
+
+#: src/admin/settings.js:214
+msgid "One language is used to tokenize the whole combined index."
+msgstr ""
+
+#: src/admin/settings.js:216
+msgid "Two-letter language code"
+msgstr ""
+
+#: src/admin/settings.js:219
+msgid "For example: en, nb, de, fr."
+msgstr ""
+
+#: src/admin/settings.js:226
+msgid "Post types"
+msgstr ""
+
+#: src/admin/settings.js:227
+msgid "Only these post types are mirrored into the combined index."
+msgstr ""
+
+#: src/admin/settings.js:249
+msgid "Saving…"
+msgstr ""
+
+#: src/admin/settings.js:249
+msgid "Save settings"
+msgstr ""
+
+#. translators: %d: number of sites left to reindex
+#: src/admin/settings.js:258
+#, js-format
+msgid "Reindexing… %d left"
+msgstr ""
+
+#: src/admin/settings.js:261
+msgid "Reindex now"
+msgstr ""
+
+#: src/admin/settings.js:262
+msgid "Reindex rebuilds the combined index for all participating sites in the background."
+msgstr ""
+
+#: src/cross-site-search/index.js:34
+#: src/cross-site-search/index.js:85
+msgid "Site filter"
+msgstr ""
+
+#: src/cross-site-search/index.js:35
+msgid "Type filter"
+msgstr ""
+
+#: src/cross-site-search/index.js:36
+#: src/cross-site-search/index.js:69
+msgid "Sorting"
+msgstr ""
+
+#: src/cross-site-search/index.js:37
+msgid "Highlighting"
+msgstr ""
+
+#: src/cross-site-search/index.js:42
+msgid "Content"
+msgstr ""
+
+#: src/cross-site-search/index.js:44
+msgid "Heading"
+msgstr ""
+
+#: src/cross-site-search/index.js:50
+msgid "Placeholder"
+msgstr ""
+
+#: src/cross-site-search/index.js:56
+msgid "Results"
+msgstr ""
+
+#: src/cross-site-search/index.js:58
+msgid "Results per page"
+msgstr ""
+
+#: src/cross-site-search/index.js:65
+msgid "Show excerpt"
+msgstr ""
+
+#: src/cross-site-search/index.js:66
+msgid "Show date"
+msgstr ""
+
+#: src/cross-site-search/index.js:67
+msgid "Highlight matches"
+msgstr ""
+
+#: src/cross-site-search/index.js:70
+msgid "Show sort control"
+msgstr ""
+
+#: src/cross-site-search/index.js:72
+msgid "Default sort"
+msgstr ""
+
+#: src/cross-site-search/index.js:84
+msgid "Filters"
+msgstr ""
+
+#: src/cross-site-search/index.js:86
+msgid "Post type filter"
+msgstr ""
+
+#: src/cross-site-search/index.js:102
+msgid "Enabled:"
+msgstr ""
+
+#: src/cross-site-search/index.js:103
+msgid "Cross-site search results appear here on the front end."
+msgstr ""
+
+#: src/cross-site-search/block.json
+msgctxt "block title"
+msgid "Cross-Site Search"
+msgstr ""
+
+#: src/cross-site-search/block.json
+msgctxt "block description"
+msgid "A complete search experience across all participating sites in the network: facets, sorting, highlighting, and pagination."
+msgstr ""
+
+#: src/cross-site-search/block.json
+msgctxt "block keyword"
+msgid "search"
+msgstr ""
+
+#: src/cross-site-search/block.json
+msgctxt "block keyword"
+msgid "multisite"
+msgstr ""
+
+#: src/cross-site-search/block.json
+msgctxt "block keyword"
+msgid "network"
+msgstr ""
+
+#: src/cross-site-search/block.json
+msgctxt "block keyword"
+msgid "loupe"
+msgstr ""

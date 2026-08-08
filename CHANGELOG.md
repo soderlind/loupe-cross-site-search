@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Automatic updates from GitHub releases via
+  [soderlind/wordpress-github-updater](https://github.com/soderlind/wordpress-plugin-github-updater)
+  (bundles `plugin-update-checker`).
+- Internationalization: `languages/` POT, `i18n:*` build scripts, `i18n-map.json`,
+  and text-domain loading for PHP and JS strings.
+
+### Changed
+
+- Block and network-settings app are now built from `src/` with
+  `@wordpress/scripts` (`npm run build`), replacing the hand-written JS and
+  `*.asset.php` files. Dependencies and cache-busting versions are generated;
+  `build/` is git-ignored and produced by CI for release zips.
+
+## [1.0.0] - 2026-08-08
+
+First stable release.
+
+### Added
+
 - **Reindex now** button on the network settings screen: queues a background
   reindex via bundled **Action Scheduler** (one async job per participating
   site), with a `GET`/`POST /wp-json/loupe-cross-site/v1/reindex` endpoint and
@@ -58,5 +77,6 @@ Initial public release.
   `loupe_cross_site_db_path`.
 - Test suites: PHP (Pest + Brain Monkey) and JavaScript (Vitest + jsdom).
 
-[Unreleased]: https://github.com/soderlind/loupe-cross-site-search/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/soderlind/loupe-cross-site-search/compare/1.0.0...HEAD
+[1.0.0]: https://github.com/soderlind/loupe-cross-site-search/compare/0.2.0...1.0.0
 [0.2.0]: https://github.com/soderlind/loupe-cross-site-search/releases/tag/0.2.0

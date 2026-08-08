@@ -20,19 +20,21 @@ tests/
 phpunit.xml.dist
 .phpunit.cache/
 
-# JS tooling (the block ships prebuilt, hand-written JS — no build output needed)
+# JS tooling and sources (the compiled block/admin ship in build/).
 node_modules/
 package.json
 package-lock.json
 vitest.config.js
+webpack.config.js
+i18n-map.json
+src/
+bin/
 
 # Composer manifests (the build ships vendor/ from `composer install --no-dev`).
 composer.json
 composer.lock
 
-# Composer autoloader is unused (classes are required directly); don't ship it.
-vendor/autoload.php
-vendor/composer/
+# Composer autoloader ships — needed to load the GitHub updater library.
 
 # Bundled Action Scheduler ships, but not its dev / test / CI files.
 vendor/woocommerce/action-scheduler/.github/

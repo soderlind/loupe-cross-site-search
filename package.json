@@ -1,14 +1,24 @@
 {
 	"name": "loupe-cross-site-search",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Cross-site search add-on for Loupe Search (WordPress multisite).",
 	"private": true,
 	"license": "GPL-2.0-or-later",
 	"scripts": {
+		"build": "wp-scripts build",
+		"start": "wp-scripts start",
+		"package": "npm run build && bash bin/build.sh",
+		"i18n": "npm run i18n:make-pot && npm run i18n:update-po && npm run i18n:make-mo && npm run i18n:make-json && npm run i18n:make-php",
+		"i18n:make-pot": "wp i18n make-pot . languages/loupe-cross-site-search.pot --exclude=node_modules,vendor,tests,build --domain=loupe-cross-site-search",
+		"i18n:update-po": "wp i18n update-po languages/loupe-cross-site-search.pot languages/",
+		"i18n:make-mo": "wp i18n make-mo languages/",
+		"i18n:make-json": "wp i18n make-json languages/ --no-purge --use-map=i18n-map.json",
+		"i18n:make-php": "wp i18n make-php languages/",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
 	"devDependencies": {
+		"@wordpress/scripts": "^34.0.0",
 		"jsdom": "^25.0.0",
 		"vitest": "^3.2.6"
 	}

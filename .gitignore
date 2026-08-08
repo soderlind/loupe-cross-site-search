@@ -1,5 +1,5 @@
 /vendor/
 /node_modules/
+/build/
 /.phpunit.cache/
-/package-lock.json
 /.playwright-mcp/

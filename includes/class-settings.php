@@ -116,14 +116,14 @@ class Settings {
 	}
 
 	private function enqueue_assets(): void {
-		$base  = LCSS_PATH . 'admin/settings';
+		$base  = LCSS_PATH . 'build/admin/settings';
 		$asset = file_exists( $base . '.asset.php' )
 			? require $base . '.asset.php'
 			: [ 'dependencies' => [ 'wp-element', 'wp-components', 'wp-api-fetch', 'wp-i18n', 'wp-dom-ready' ], 'version' => LCSS_VERSION ];
 
-		wp_enqueue_script( 'lcss-settings', LCSS_URL . 'admin/settings.js', $asset['dependencies'], $asset['version'], true );
-		wp_enqueue_style( 'lcss-settings', LCSS_URL . 'admin/settings.css', [ 'wp-components' ], $asset['version'] );
-		wp_set_script_translations( 'lcss-settings', 'loupe-cross-site-search' );
+		wp_enqueue_script( 'lcss-settings', LCSS_URL . 'build/admin/settings.js', $asset['dependencies'], $asset['version'], true );
+		wp_enqueue_style( 'lcss-settings', LCSS_URL . 'build/admin/settings.css', [ 'wp-components' ], $asset['version'] );
+		wp_set_script_translations( 'lcss-settings', 'loupe-cross-site-search', LCSS_PATH . 'languages' );
 
 		wp_add_inline_script(
 			'lcss-settings',

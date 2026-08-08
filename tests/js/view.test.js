@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import view from '../../blocks/cross-site-search/view.js';
+import view from '../../src/cross-site-search/view.js';
 
 const { h, debounce, initBlock, sanitizeHighlight, fmt } = view;
 

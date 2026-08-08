@@ -46,6 +46,10 @@ in [`CONTEXT.md`](CONTEXT.md).
    wp loupe-cross-site reindex
    ```
 
+Once installed, the plugin updates itself from GitHub releases (via
+[soderlind/wordpress-github-updater](https://github.com/soderlind/wordpress-plugin-github-updater))
+— new releases appear on the WordPress Plugins update screen.
+
 ## Configuration
 
 ### Network Admin → Settings → Cross-Site Search

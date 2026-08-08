@@ -21,11 +21,18 @@ class Block {
 	}
 
 	public function register(): void {
-		$dir = LCSS_PATH . 'blocks/cross-site-search';
+		$dir = LCSS_PATH . 'build/cross-site-search';
 		if ( ! file_exists( $dir . '/block.json' ) ) {
 			return;
 		}
-		register_block_type( $dir, [ 'render_callback' => [ $this, 'render' ] ] );
+		$block_type = register_block_type( $dir, [ 'render_callback' => [ $this, 'render' ] ] );
+
+		// Load JS translations from the bundled languages/ directory.
+		if ( $block_type instanceof \WP_Block_Type ) {
+			foreach ( (array) $block_type->editor_script_handles as $handle ) {
+				wp_set_script_translations( $handle, 'loupe-cross-site-search', LCSS_PATH . 'languages' );
+			}
+		}
 	}
 
 	/**
@@ -54,8 +61,11 @@ class Block {
 				'oldest'     => __( 'Oldest', 'loupe-cross-site-search' ),
 				'title'      => __( 'Title', 'loupe-cross-site-search' ),
 				'searching'  => __( 'Searching…', 'loupe-cross-site-search' ),
+				/* translators: %s: search query */
 				'noResults'  => __( 'No results for “%s”.', 'loupe-cross-site-search' ),
+				/* translators: 1: result count, 2: search query, 3: time in milliseconds */
 				'results'    => __( '%1$d results for “%2$s” in %3$d ms', 'loupe-cross-site-search' ),
+				/* translators: 1: search query, 2: time in milliseconds */
 				'oneResult'  => __( '1 result for “%1$s” in %2$d ms', 'loupe-cross-site-search' ),
 				'failed'     => __( 'Search failed. Please try again.', 'loupe-cross-site-search' ),
 				'clear'      => __( 'Clear search', 'loupe-cross-site-search' ),

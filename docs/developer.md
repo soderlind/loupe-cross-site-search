@@ -68,7 +68,7 @@ Filterable / sortable / facetable fields are limited to `post_type`, `blog_id`,
 ## Network settings (admin)
 
 The Network Admin → Settings → Cross-Site Search screen is a WordPress React app
-([admin/settings.js](../admin/settings.js), `@wordpress/components`) backed by a
+([src/admin/settings.js](../src/admin/settings.js), `@wordpress/components`) backed by a
 private REST endpoint:
 
 ```text
@@ -122,12 +122,12 @@ Everything is configurable from the block inspector:
 | `showDate` | `true` | Show the result date |
 | `highlight` | `true` | Request and render match highlighting |
 
-The front-end logic is plain JavaScript in
-[blocks/cross-site-search/view.js](../blocks/cross-site-search/view.js) — no build
-step. `file:` block scripts require companion `*.asset.php` files (present in
-[blocks/cross-site-search/](../blocks/cross-site-search)); without them WordPress
-silently skips script registration. Prefer the block, or build your own UI on the
-REST API for anything more specialized.
+The front-end logic lives in [src/cross-site-search/view.js](../src/cross-site-search/view.js)
+and the editor in [src/cross-site-search/index.js](../src/cross-site-search/index.js).
+They are compiled with `@wordpress/scripts` (see [Building](#building)); the
+generated `build/cross-site-search/*.asset.php` files declare dependencies and
+versions. Prefer the block, or build your own UI on the REST API for anything
+more specialized.
 
 > On **subdomain** multisite, a block placed on a non-hub site makes a
 > cross-origin request to the hub and may be blocked by CORS. Place the block on
@@ -173,9 +173,43 @@ the database the same way a normal request does.
 | `loupe_cross_site_document` | `array $document, WP_Post $post, int $blog_id` — adjust a document before it is written. |
 | `loupe_cross_site_db_path` | `string $path` — move the combined index directory (default `WP_CONTENT_DIR/loupe-cross-site-db`). |
 
+## Building
+
+The block and the settings app are built from `src/` with
+[`@wordpress/scripts`](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/):
+
+```bash
+npm install
+npm run build     # compile src/ → build/ (generates *.asset.php)
+npm start         # watch mode for development
+npm run package   # build, then create the distributable zip (bin/build.sh)
+```
+
+Layout: `src/cross-site-search/` (block: `block.json`, `index.js`, `view.js`,
+`style.scss`) and `src/admin/settings.js` (network settings app, added as an extra
+entry in [webpack.config.js](../webpack.config.js)). Output lands in `build/`,
+which is git-ignored and produced by CI for releases. PHP loads the block from
+`build/cross-site-search` and the admin app from `build/admin`.
+
 ## Testing
 
 ```bash
 composer install && composer test   # PHP: Pest + Brain Monkey (WordPress mocked)
-npm install && npm test             # JS: Vitest + jsdom (example block)
+npm install && npm test             # JS: Vitest + jsdom (block view logic)
 ```
+
+## Translations
+
+Strings use the `loupe-cross-site-search` text domain (PHP via `__()`, JS via
+`@wordpress/i18n`). Translation files live in `languages/`. Regenerate them with
+WP-CLI:
+
+```bash
+npm run i18n:make-pot   # scan PHP + src/ JS → languages/loupe-cross-site-search.pot
+npm run i18n            # full pipeline: pot → po → mo → json → php
+```
+
+`i18n-map.json` maps the JS sources to their `build/` outputs so `make-json`
+associates strings with the correct script handles. The plugin loads PHP
+translations via `load_plugin_textdomain` and JS translations via
+`wp_set_script_translations` pointed at `languages/`.
