@@ -5,7 +5,7 @@ Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.3
 Requires Plugins: loupe-search
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -91,6 +91,11 @@ Content is mirrored in real time as posts are published, updated, unpublished, t
 The block queries the hub site's endpoint. On subdomain networks this is a cross-origin request and may be blocked by CORS unless the block is on the hub site (or you add CORS headers). Subdirectory networks are same-origin and work out of the box.
 
 == Changelog ==
+
+= 1.1.0 =
+* Automatic updates from GitHub releases (bundles plugin-update-checker).
+* Internationalization: languages/ POT, i18n build scripts, and text-domain loading.
+* Block and network-settings app are now built from src/ with @wordpress/scripts.
 
 = 1.0.0 =
 * First stable release.
