@@ -86,37 +86,7 @@ class CLI {
 		$post_types = $this->post_types_arg( $assoc_args );
 		$index      = new Combined_Index( $post_types, Settings::get_language() );
 
-		// Clear this site's slice first so deletions/stale docs don't survive.
-		$index->purge_site( $blog_id );
-
-		$total = 0;
-		foreach ( $post_types as $post_type ) {
-			$paged = 1;
-			do {
-				$ids = get_posts( [
-					'post_type'        => $post_type,
-					'post_status'      => 'publish',
-					'posts_per_page'   => 200,
-					'paged'            => $paged,
-					'fields'           => 'ids',
-					'orderby'          => 'ID',
-					'order'            => 'ASC',
-					'suppress_filters' => false,
-				] );
-				foreach ( $ids as $post_id ) {
-					$post = get_post( $post_id );
-					if ( ! $post instanceof \WP_Post ) {
-						continue;
-					}
-					$document = Document_Builder::build( $post, $blog_id );
-					if ( null !== $document ) {
-						$index->add_document( $post_type, $document );
-						$total++;
-					}
-				}
-				$paged++;
-			} while ( count( $ids ) === 200 );
-		}
+		$total = Reindexer::run( $blog_id, $index );
 
 		\WP_CLI::success( sprintf( 'Indexed %d documents for site %d.', $total, $blog_id ) );
 	}

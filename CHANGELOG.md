@@ -7,12 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Reindex now** button on the network settings screen: queues a background
+  reindex via bundled **Action Scheduler** (one async job per participating
+  site), with a `GET`/`POST /wp-json/loupe-cross-site/v1/reindex` endpoint and
+  live progress polling. See [ADR 0005](docs/adr/0005-background-reindex-action-scheduler.md).
+- Bundled `woocommerce/action-scheduler` as a runtime dependency (shipped in the
+  release zip via `composer install --no-dev`).
+
 ### Changed
 
 - Network settings screen rebuilt as a WordPress React app
   (`@wordpress/components`) backed by a `manage_network_options` REST endpoint
   (`GET`/`POST /wp-json/loupe-cross-site/v1/settings`): card layout, searchable
   site allow/block list, and inline save with a success notice.
+
+### Fixed
+
+- `Document_Builder` rebuilds its cached Loupe Search indexer when the blog
+  context changes, preventing one site's post-type-keyed schema cache from
+  leaking into another when several sites are reindexed in one request.
 
 ## [0.2.0] - 2026-08-08
 

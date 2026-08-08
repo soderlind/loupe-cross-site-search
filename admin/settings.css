@@ -58,7 +58,18 @@
 }
 
 .lcss-settings__actions {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.75em;
 	margin-top: 0.5em;
+}
+
+.lcss-settings__actions .lcss-hint {
+	flex-basis: 100%;
+	margin: 0.25em 0 0;
+	font-size: 0.85rem;
+	color: #50575e;
 }
 
 .lcss-settings__loading {

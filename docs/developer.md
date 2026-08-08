@@ -74,12 +74,24 @@ private REST endpoint:
 ```text
 GET  /wp-json/loupe-cross-site/v1/settings
 POST /wp-json/loupe-cross-site/v1/settings
+GET  /wp-json/loupe-cross-site/v1/reindex
+POST /wp-json/loupe-cross-site/v1/reindex
 ```
 
-Both require the `manage_network_options` capability. `GET` returns the current
-settings plus the site list and available public post types; `POST` accepts the
-settings object, sanitizes it ([Settings::sanitize()](../includes/class-settings.php)),
-and persists it as the `loupe_cross_site_settings` network option.
+All require the `manage_network_options` capability. On `/settings`, `GET` returns
+the current settings plus the site list and available public post types; `POST`
+accepts the settings object, sanitizes it
+([Settings::sanitize()](../includes/class-settings.php)), and persists it as the
+`loupe_cross_site_settings` network option.
+
+The **Reindex now** button posts to `/reindex`, which queues a background reindex
+via **Action Scheduler** (bundled — one async `lcss_reindex_site` job per
+participating site, group `loupe-cross-site`). `GET /reindex` reports
+`{ available, queued, pending, started_at, finished_at }`, which the UI polls to
+show progress. Action Scheduler's runner drains the queue; nothing extra is
+required, though `wp action-scheduler run` forces immediate processing. See
+[ADR 0005](adr/0005-background-reindex-action-scheduler.md); the WP-CLI `reindex`
+command remains the fully faithful per-process alternative.
 
 ## Search block
 

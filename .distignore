@@ -26,10 +26,25 @@ package.json
 package-lock.json
 vitest.config.js
 
-# Composer: no runtime dependencies, so nothing from here ships.
+# Composer manifests (the build ships vendor/ from `composer install --no-dev`).
 composer.json
 composer.lock
-vendor/
+
+# Composer autoloader is unused (classes are required directly); don't ship it.
+vendor/autoload.php
+vendor/composer/
+
+# Bundled Action Scheduler ships, but not its dev / test / CI files.
+vendor/woocommerce/action-scheduler/.github/
+vendor/woocommerce/action-scheduler/tests/
+vendor/woocommerce/action-scheduler/docs/
+vendor/woocommerce/action-scheduler/bin/
+vendor/woocommerce/action-scheduler/phpunit.xml.dist
+vendor/woocommerce/action-scheduler/composer.json
+vendor/woocommerce/action-scheduler/package.json
+vendor/woocommerce/action-scheduler/*.md
+vendor/woocommerce/action-scheduler/*.yml
+vendor/woocommerce/action-scheduler/*.dist
 
 # Documentation (GitHub-only; readme.txt is kept for wp.org)
 README.md

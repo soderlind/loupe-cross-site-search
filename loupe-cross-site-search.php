@@ -35,10 +35,18 @@ define( 'LCSS_VERSION', '0.2.0' );
 define( 'LCSS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LCSS_URL', plugin_dir_url( __FILE__ ) );
 
+// Bundled Action Scheduler. Safe to bundle: every copy registers itself and the
+// newest version across all plugins boots. Loaded at plugin-file time as AS requires.
+if ( file_exists( LCSS_PATH . 'vendor/woocommerce/action-scheduler/action-scheduler.php' ) ) {
+	require_once LCSS_PATH . 'vendor/woocommerce/action-scheduler/action-scheduler.php';
+}
+
 require_once LCSS_PATH . 'includes/class-participation.php';
 require_once LCSS_PATH . 'includes/class-settings.php';
 require_once LCSS_PATH . 'includes/class-combined-index.php';
 require_once LCSS_PATH . 'includes/class-document-builder.php';
+require_once LCSS_PATH . 'includes/class-reindexer.php';
+require_once LCSS_PATH . 'includes/class-reindex-scheduler.php';
 require_once LCSS_PATH . 'includes/class-mirror.php';
 require_once LCSS_PATH . 'includes/class-site-lifecycle.php';
 require_once LCSS_PATH . 'includes/class-rest-controller.php';

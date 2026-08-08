@@ -23,6 +23,9 @@ class Document_Builder {
 
 	private static ?WP_Loupe_Indexer $indexer = null;
 
+	/** Blog the cached indexer (and its schema cache) was built for. */
+	private static int $indexer_blog = 0;
+
 	/**
 	 * Composite primary key for a post in the combined index.
 	 */
@@ -48,7 +51,7 @@ class Document_Builder {
 			return null;
 		}
 
-		$prepared = self::prepared( $post );
+		$prepared = self::prepared( $post, $blog_id );
 
 		$document = [
 			'id'           => self::document_id( $blog_id, (int) $post->ID ),
@@ -77,11 +80,15 @@ class Document_Builder {
 	 *
 	 * @return array<string,mixed>
 	 */
-	private static function prepared( \WP_Post $post ): array {
+	private static function prepared( \WP_Post $post, int $blog_id ): array {
 		try {
-			if ( null === self::$indexer ) {
+			// Rebuild for a new blog: the indexer's schema manager caches by post
+			// type only, which would leak one site's schema into another when
+			// several sites are reindexed in one request (switch_to_blog batch).
+			if ( null === self::$indexer || self::$indexer_blog !== $blog_id ) {
 				// register_hooks:false — we only want prepare_document(), not a second set of save hooks.
-				self::$indexer = new WP_Loupe_Indexer( Settings::get_post_types(), false );
+				self::$indexer      = new WP_Loupe_Indexer( Settings::get_post_types(), false );
+				self::$indexer_blog = $blog_id;
 			}
 			$doc = self::$indexer->prepare_document( $post );
 			return is_array( $doc ) ? $doc : [];

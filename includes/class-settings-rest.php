@@ -31,6 +31,19 @@ class Settings_REST {
 				'permission_callback' => [ $this, 'can_manage' ],
 			],
 		] );
+
+		register_rest_route( self::NAMESPACE, '/reindex', [
+			[
+				'methods'             => 'GET',
+				'callback'            => [ $this, 'reindex_status' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			],
+			[
+				'methods'             => 'POST',
+				'callback'            => [ $this, 'reindex_start' ],
+				'permission_callback' => [ $this, 'can_manage' ],
+			],
+		] );
 	}
 
 	public function can_manage(): bool {
@@ -51,6 +64,22 @@ class Settings_REST {
 		}
 		update_site_option( Settings::OPTION, Settings::sanitize( $input ) );
 		return new \WP_REST_Response( $this->payload(), 200 );
+	}
+
+	public function reindex_status(): \WP_REST_Response {
+		return new \WP_REST_Response( ( new Reindex_Scheduler() )->status(), 200 );
+	}
+
+	/**
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function reindex_start() {
+		$scheduler = new Reindex_Scheduler();
+		if ( ! Reindex_Scheduler::available() ) {
+			return new \WP_Error( 'lcss_scheduler_unavailable', __( 'Action Scheduler is not available.', 'loupe-cross-site-search' ), [ 'status' => 503 ] );
+		}
+		$queued = $scheduler->schedule_all();
+		return new \WP_REST_Response( [ 'queued' => $queued ] + $scheduler->status(), 200 );
 	}
 
 	/**

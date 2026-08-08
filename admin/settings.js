@@ -7,6 +7,7 @@
 	var Fragment = wp.element.Fragment;
 	var useState = wp.element.useState;
 	var useEffect = wp.element.useEffect;
+	var useRef = wp.element.useRef;
 	var apiFetch = wp.apiFetch;
 	var __ = wp.i18n.__;
 	var sprintf = wp.i18n.sprintf;
@@ -41,6 +42,9 @@
 		var s = useState( false ); var saving = s[ 0 ], setSaving = s[ 1 ];
 		var n = useState( null ); var notice = n[ 0 ], setNotice = n[ 1 ];
 		var f = useState( '' ); var filter = f[ 0 ], setFilter = f[ 1 ];
+		var rx = useState( { available: true, pending: 0, queued: 0, started_at: 0, finished_at: 0 } );
+		var reindex = rx[ 0 ], setReindex = rx[ 1 ];
+		var pollRef = useRef( null );
 
 		useEffect( function () {
 			apiFetch( { path: '/loupe-cross-site/v1/settings' } )
@@ -48,6 +52,40 @@
 				.catch( function () { setNotice( { status: 'error', msg: __( 'Failed to load settings.', 'loupe-cross-site-search' ) } ); } )
 				.finally( function () { setLoading( false ); } );
 		}, [] );
+
+		useEffect( function () {
+			loadReindex();
+			return function () { if ( pollRef.current ) { clearTimeout( pollRef.current ); } };
+		}, [] );
+
+		function loadReindex() {
+			apiFetch( { path: '/loupe-cross-site/v1/reindex' } )
+				.then( function ( r ) {
+					setReindex( function ( prev ) { return Object.assign( {}, prev, r ); } );
+					scheduleNextPoll( r );
+				} )
+				.catch( function () {} );
+		}
+
+		function scheduleNextPoll( r ) {
+			if ( pollRef.current ) { clearTimeout( pollRef.current ); }
+			if ( r && r.pending > 0 ) {
+				pollRef.current = setTimeout( loadReindex, 3000 );
+			}
+		}
+
+		function startReindex() {
+			setNotice( null );
+			apiFetch( { path: '/loupe-cross-site/v1/reindex', method: 'POST' } )
+				.then( function ( r ) {
+					setReindex( function ( prev ) { return Object.assign( {}, prev, r ); } );
+					setNotice( { status: 'success', msg: sprintf( __( 'Reindex queued for %d sites. It runs in the background.', 'loupe-cross-site-search' ), r.queued || 0 ) } );
+					scheduleNextPoll( r );
+				} )
+				.catch( function ( err ) {
+					setNotice( { status: 'error', msg: ( err && err.message ) || __( 'Could not start the reindex.', 'loupe-cross-site-search' ) } );
+				} );
+		}
 
 		function update( patch ) {
 			setData( function ( prev ) {
@@ -209,7 +247,16 @@
 					isBusy: saving,
 					disabled: saving,
 					onClick: save,
-				}, saving ? __( 'Saving…', 'loupe-cross-site-search' ) : __( 'Save settings', 'loupe-cross-site-search' ) )
+				}, saving ? __( 'Saving…', 'loupe-cross-site-search' ) : __( 'Save settings', 'loupe-cross-site-search' ) ),
+				reindex.available ? el( C.Button, {
+					variant: 'secondary',
+					isBusy: reindex.pending > 0,
+					disabled: reindex.pending > 0,
+					onClick: startReindex,
+				}, reindex.pending > 0
+					? sprintf( __( 'Reindexing… %d left', 'loupe-cross-site-search' ), reindex.pending )
+					: __( 'Reindex now', 'loupe-cross-site-search' ) ) : null,
+				el( 'p', { className: 'lcss-hint' }, __( 'Reindex rebuilds the combined index for all participating sites in the background.', 'loupe-cross-site-search' ) )
 			)
 		);
 	}

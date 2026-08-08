@@ -46,6 +46,9 @@ class Plugin {
 		// Site lifecycle purge/enroll runs network-wide (context-free).
 		new Site_Lifecycle();
 
+		// Background reindex handler must be registered wherever Action Scheduler runs.
+		( new Reindex_Scheduler() )->register();
+
 		// Network settings REST endpoints (not is_admin(), so register unconditionally).
 		add_action( 'rest_api_init', function (): void {
 			( new Settings_REST() )->register_routes();
