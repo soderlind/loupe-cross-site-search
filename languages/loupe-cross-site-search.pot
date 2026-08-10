@@ -2,21 +2,21 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Loupe Cross-Site Search 1.0.0\n"
+"Project-Id-Version: Loupe Cross-Site Search 1.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/loupe-cross-site-search\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-08T00:47:06+00:00\n"
+"POT-Creation-Date: 2026-08-10T08:45:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: loupe-cross-site-search\n"
 
 #. Plugin Name of the plugin
 #: loupe-cross-site-search.php
-#: src/admin/settings.js:150
+#: src/admin/settings.js:189
 msgid "Loupe Cross-Site Search"
 msgstr ""
 
@@ -197,126 +197,134 @@ msgstr ""
 msgid "The Cross-Site Search settings screen requires JavaScript."
 msgstr ""
 
-#: src/admin/settings.js:68
-msgid "Failed to load settings."
-msgstr ""
-
-#. translators: %d: number of sites queued
-#: src/admin/settings.js:95
-#, js-format
-msgid "Reindex queued for %d sites. It runs in the background."
-msgstr ""
-
-#: src/admin/settings.js:100
+#: src/admin/settings.js:82
 msgid "Could not start the reindex."
 msgstr ""
 
-#: src/admin/settings.js:121
-msgid "Settings saved. Run “wp loupe-cross-site reindex” to apply changes to the index."
+#. translators: 1: sites reindexed, 2: total sites, 3: percent complete
+#: src/admin/settings.js:103
+#, js-format
+msgid "Reindexing %1$d of %2$d sites · %3$d%%"
+msgstr ""
+
+#. translators: %d: number of sites in the combined index
+#: src/admin/settings.js:111
+#, js-format
+msgid "Combined index up to date · %d sites"
 msgstr ""
 
 #: src/admin/settings.js:123
+msgid "Reindexing…"
+msgstr ""
+
+#: src/admin/settings.js:123
+msgid "Reindex now"
+msgstr ""
+
+#: src/admin/settings.js:138
+msgid "Failed to load settings."
+msgstr ""
+
+#: src/admin/settings.js:160
+msgid "Settings saved. Run “wp loupe-cross-site reindex” to apply changes to the index."
+msgstr ""
+
+#: src/admin/settings.js:162
 msgid "Save failed."
 msgstr ""
 
-#: src/admin/settings.js:128
+#: src/admin/settings.js:167
 msgid "Loading settings…"
 msgstr ""
 
-#: src/admin/settings.js:131
+#: src/admin/settings.js:170
 msgid "No data."
 msgstr ""
 
 #. translators: %d: number of participating sites
-#: src/admin/settings.js:153
+#: src/admin/settings.js:192
 #, js-format
 msgid "%d sites currently participate in cross-site search."
 msgstr ""
 
-#: src/admin/settings.js:160
+#: src/admin/settings.js:199
 msgid "Hub site"
 msgstr ""
 
-#: src/admin/settings.js:161
+#: src/admin/settings.js:200
 msgid "The search endpoint POST /wp-json/loupe-cross-site/v1/search is registered only on this site."
 msgstr ""
 
-#: src/admin/settings.js:163
+#: src/admin/settings.js:202
 msgid "Site that exposes the search endpoint"
 msgstr ""
 
-#: src/admin/settings.js:173
+#: src/admin/settings.js:212
 msgid "Participation"
 msgstr ""
 
-#: src/admin/settings.js:174
+#: src/admin/settings.js:213
 msgid "Choose which sites are searchable."
 msgstr ""
 
-#: src/admin/settings.js:181
+#: src/admin/settings.js:220
 msgid "All public sites"
 msgstr ""
 
-#: src/admin/settings.js:182
+#: src/admin/settings.js:221
 msgid "Only selected sites (allowlist)"
 msgstr ""
 
-#: src/admin/settings.js:183
+#: src/admin/settings.js:222
 msgid "All public sites except selected (blocklist)"
 msgstr ""
 
-#: src/admin/settings.js:193
+#: src/admin/settings.js:232
 msgid "Filter sites…"
 msgstr ""
 
-#: src/admin/settings.js:202
+#: src/admin/settings.js:241
 msgid "not public"
 msgstr ""
 
-#: src/admin/settings.js:213
+#: src/admin/settings.js:252
 msgid "Index language"
 msgstr ""
 
-#: src/admin/settings.js:214
+#: src/admin/settings.js:253
 msgid "One language is used to tokenize the whole combined index."
 msgstr ""
 
-#: src/admin/settings.js:216
+#: src/admin/settings.js:255
 msgid "Two-letter language code"
 msgstr ""
 
-#: src/admin/settings.js:219
+#: src/admin/settings.js:258
 msgid "For example: en, nb, de, fr."
 msgstr ""
 
-#: src/admin/settings.js:226
+#: src/admin/settings.js:265
 msgid "Post types"
 msgstr ""
 
-#: src/admin/settings.js:227
+#: src/admin/settings.js:266
 msgid "Only these post types are mirrored into the combined index."
 msgstr ""
 
-#: src/admin/settings.js:249
+#: src/admin/settings.js:281
+msgid "Reindex"
+msgstr ""
+
+#: src/admin/settings.js:282
+msgid "Rebuild the combined index for all participating sites. It runs in the background — you can leave this page."
+msgstr ""
+
+#: src/admin/settings.js:294
 msgid "Saving…"
 msgstr ""
 
-#: src/admin/settings.js:249
+#: src/admin/settings.js:294
 msgid "Save settings"
-msgstr ""
-
-#. translators: %d: number of sites left to reindex
-#: src/admin/settings.js:258
-#, js-format
-msgid "Reindexing… %d left"
-msgstr ""
-
-#: src/admin/settings.js:261
-msgid "Reindex now"
-msgstr ""
-
-#: src/admin/settings.js:262
-msgid "Reindex rebuilds the combined index for all participating sites in the background."
 msgstr ""
 
 #: src/cross-site-search/index.js:34

@@ -26,6 +26,7 @@ import {
 	Button,
 	Notice,
 	Spinner,
+	ProgressBar,
 } from '@wordpress/components';
 import './settings.scss';
 
@@ -52,22 +53,11 @@ function card( title, description, children ) {
 	);
 }
 
-function App() {
-	const d = useState( null ); const data = d[ 0 ], setData = d[ 1 ];
-	const l = useState( true ); const loading = l[ 0 ], setLoading = l[ 1 ];
-	const s = useState( false ); const saving = s[ 0 ], setSaving = s[ 1 ];
-	const n = useState( null ); const notice = n[ 0 ], setNotice = n[ 1 ];
-	const f = useState( '' ); const filter = f[ 0 ], setFilter = f[ 1 ];
+function ReindexPanel() {
 	const rx = useState( { available: true, pending: 0, queued: 0, started_at: 0, finished_at: 0 } );
 	const reindex = rx[ 0 ], setReindex = rx[ 1 ];
+	const e = useState( null ); const error = e[ 0 ], setError = e[ 1 ];
 	const pollRef = useRef( null );
-
-	useEffect( () => {
-		apiFetch( { path: '/loupe-cross-site/v1/settings' } )
-			.then( ( res ) => setData( res ) )
-			.catch( () => setNotice( { status: 'error', msg: __( 'Failed to load settings.', 'loupe-cross-site-search' ) } ) )
-			.finally( () => setLoading( false ) );
-	}, [] );
 
 	useEffect( () => {
 		loadReindex();
@@ -86,19 +76,68 @@ function App() {
 	}
 
 	function startReindex() {
-		setNotice( null );
+		setError( null );
 		apiFetch( { path: '/loupe-cross-site/v1/reindex', method: 'POST' } )
-			.then( ( r ) => {
-				setReindex( ( prev ) => ( { ...prev, ...r } ) );
-				setNotice( { status: 'success', msg: sprintf(
-					/* translators: %d: number of sites queued */
-					__( 'Reindex queued for %d sites. It runs in the background.', 'loupe-cross-site-search' ),
-					r.queued || 0
-				) } );
-				scheduleNextPoll( r );
-			} )
-			.catch( ( err ) => setNotice( { status: 'error', msg: ( err && err.message ) || __( 'Could not start the reindex.', 'loupe-cross-site-search' ) } ) );
+			.then( ( r ) => { setReindex( ( prev ) => ( { ...prev, ...r } ) ); scheduleNextPoll( r ); } )
+			.catch( ( err ) => setError( ( err && err.message ) || __( 'Could not start the reindex.', 'loupe-cross-site-search' ) ) );
 	}
+
+	if ( ! reindex.available ) { return null; }
+
+	const running = reindex.pending > 0;
+	const total = reindex.queued || 0;
+	const done = Math.max( 0, total - ( reindex.pending || 0 ) );
+	const percent = total > 0 ? Math.round( ( done / total ) * 100 ) : 0;
+	const completed = ! running && reindex.finished_at > 0;
+
+	return el(
+		'div',
+		{ className: 'lcss-reindex' },
+		error ? el( Notice, { status: 'error', onRemove: () => setError( null ) }, error ) : null,
+		running ? el(
+			'div',
+			{ className: 'lcss-reindex__status is-running' },
+			el( ProgressBar, { value: percent, className: 'lcss-reindex__bar' } ),
+			el( 'span', { className: 'lcss-reindex__label' }, sprintf(
+				/* translators: 1: sites reindexed, 2: total sites, 3: percent complete */
+				__( 'Reindexing %1$d of %2$d sites · %3$d%%', 'loupe-cross-site-search' ),
+				done, total, percent
+			) )
+		) : completed ? el(
+			'p',
+			{ className: 'lcss-reindex__status is-done' },
+			sprintf(
+				/* translators: %d: number of sites in the combined index */
+				__( 'Combined index up to date · %d sites', 'loupe-cross-site-search' ),
+				total
+			)
+		) : null,
+		el(
+			'div',
+			{ className: 'lcss-reindex__actions' },
+			el( Button, {
+				variant: 'secondary',
+				isBusy: running,
+				disabled: running,
+				onClick: startReindex,
+			}, running ? __( 'Reindexing…', 'loupe-cross-site-search' ) : __( 'Reindex now', 'loupe-cross-site-search' ) )
+		)
+	);
+}
+
+function App() {
+	const d = useState( null ); const data = d[ 0 ], setData = d[ 1 ];
+	const l = useState( true ); const loading = l[ 0 ], setLoading = l[ 1 ];
+	const s = useState( false ); const saving = s[ 0 ], setSaving = s[ 1 ];
+	const n = useState( null ); const notice = n[ 0 ], setNotice = n[ 1 ];
+	const f = useState( '' ); const filter = f[ 0 ], setFilter = f[ 1 ];
+
+	useEffect( () => {
+		apiFetch( { path: '/loupe-cross-site/v1/settings' } )
+			.then( ( res ) => setData( res ) )
+			.catch( () => setNotice( { status: 'error', msg: __( 'Failed to load settings.', 'loupe-cross-site-search' ) } ) )
+			.finally( () => setLoading( false ) );
+	}, [] );
 
 	function update( patch ) {
 		setData( ( prev ) => ( { ...prev, settings: { ...prev.settings, ...patch } } ) );
@@ -238,6 +277,12 @@ function App() {
 			)
 		),
 
+		card(
+			__( 'Reindex', 'loupe-cross-site-search' ),
+			__( 'Rebuild the combined index for all participating sites. It runs in the background — you can leave this page.', 'loupe-cross-site-search' ),
+			el( ReindexPanel, null )
+		),
+
 		el(
 			'div',
 			{ className: 'lcss-settings__actions' },
@@ -246,20 +291,7 @@ function App() {
 				isBusy: saving,
 				disabled: saving,
 				onClick: save,
-			}, saving ? __( 'Saving…', 'loupe-cross-site-search' ) : __( 'Save settings', 'loupe-cross-site-search' ) ),
-			reindex.available ? el( Button, {
-				variant: 'secondary',
-				isBusy: reindex.pending > 0,
-				disabled: reindex.pending > 0,
-				onClick: startReindex,
-			}, reindex.pending > 0
-			? sprintf(
-				/* translators: %d: number of sites left to reindex */
-				__( 'Reindexing… %d left', 'loupe-cross-site-search' ),
-				reindex.pending
-			)
-				: __( 'Reindex now', 'loupe-cross-site-search' ) ) : null,
-			el( 'p', { className: 'lcss-hint' }, __( 'Reindex rebuilds the combined index for all participating sites in the background.', 'loupe-cross-site-search' ) )
+			}, saving ? __( 'Saving…', 'loupe-cross-site-search' ) : __( 'Save settings', 'loupe-cross-site-search' ) )
 		)
 	);
 }

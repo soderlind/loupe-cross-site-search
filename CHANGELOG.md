@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-08-10
+
+### Changed
+
+- Rework the network settings reindex panel with a progress bar and clearer status.
+- Improve reindex error handling and messaging.
+- Update translation template (POT).
+
 ## [1.1.0] - 2026-08-08
 
 ### Added

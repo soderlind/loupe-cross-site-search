@@ -41,6 +41,25 @@
 	border: 1px solid #dcdcde;
 	border-radius: 4px;
 	padding: 0.75em;
+	scrollbar-width: auto;
+	scrollbar-color: #a7aaad #f0f0f1;
+}
+
+.lcss-sitelist::-webkit-scrollbar {
+	width: 16px;
+}
+
+.lcss-sitelist::-webkit-scrollbar-track {
+	background: #f0f0f1;
+}
+
+.lcss-sitelist::-webkit-scrollbar-thumb {
+	background: #a7aaad;
+	border-radius: 8px;
+}
+
+.lcss-sitelist::-webkit-scrollbar-thumb:hover {
+	background: #8c8f94;
 }
 
 .lcss-sitelist .components-base-control {
@@ -70,6 +89,37 @@
 	margin: 0.25em 0 0;
 	font-size: 0.85rem;
 	color: #50575e;
+}
+
+.lcss-reindex__status {
+	margin: 0 0 0.75em;
+}
+
+.lcss-reindex__status.is-running {
+	display: flex;
+	align-items: center;
+	gap: 0.75em;
+}
+
+.lcss-reindex__bar {
+	flex: 1 1 auto;
+	min-width: 160px;
+}
+
+.lcss-reindex__label {
+	flex: 0 0 auto;
+	font-size: 0.85rem;
+	color: #50575e;
+	font-variant-numeric: tabular-nums;
+}
+
+.lcss-reindex__status.is-done {
+	font-size: 0.9rem;
+	color: #007017;
+}
+
+.lcss-reindex__actions {
+	margin-top: 0.25em;
 }
 
 .lcss-settings__loading {
