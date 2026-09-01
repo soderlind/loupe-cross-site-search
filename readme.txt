@@ -5,7 +5,7 @@ Requires at least: 6.9
 Tested up to: 6.9
 Requires PHP: 8.3
 Requires Plugins: loupe-search
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -28,6 +28,7 @@ Rather than querying each site's index separately at search time, the add-on mai
 
 * Network-wide combined search index built on Loupe Search.
 * Public REST endpoint on the hub site, mirroring Loupe Search's request/response schema plus a `blog_id` filter and facet.
+* WordPress Abilities API integration: public `loupe-cross-site/search` and `loupe-cross-site/get-post` abilities for AI agents and automation.
 * Participation control: all public sites, an allowlist, or a blocklist.
 * WP-CLI commands to reindex, verify/repair drift, and purge a site.
 * A complete Cross-Site Search block: site and post-type facets, sorting, highlighted snippets, pagination, and result attribution.
@@ -91,6 +92,11 @@ Content is mirrored in real time as posts are published, updated, unpublished, t
 The block queries the hub site's endpoint. On subdomain networks this is a cross-origin request and may be blocked by CORS unless the block is on the hub site (or you add CORS headers). Subdirectory networks are same-origin and work out of the box.
 
 == Changelog ==
+
+= 1.2.0 =
+* Added: WordPress Abilities API integration. Two public, read-only abilities are registered on the hub site: `loupe-cross-site/search` (full-text search across the combined index) and `loupe-cross-site/get-post` (retrieve one publicly viewable post by site and post ID).
+* Security: The combined index now excludes non-public post types, so a non-public custom post type can never be mirrored into the shared, unauthenticated index.
+* Security: The `loupe-cross-site/get-post` ability enforces per-object visibility on the target post's own site (published, public post type, not password protected) and returns a 404 otherwise, preventing disclosure of non-public content by guessing a site/post ID pair.
 
 = 1.1.1 =
 * Rework the network settings reindex panel with a progress bar and clearer status.

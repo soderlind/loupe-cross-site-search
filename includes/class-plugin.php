@@ -65,11 +65,12 @@ class Plugin {
 			new Mirror( $index, $post_types, $blog_id );
 		}
 
-		// The search endpoint lives only on the hub site.
+		// The search endpoint and abilities live only on the hub site.
 		if ( Settings::get_hub_blog_id() === $blog_id ) {
 			add_action( 'rest_api_init', function (): void {
 				( new REST_Controller() )->register_routes();
 			} );
+			Abilities::init();
 		}
 	}
 

@@ -37,6 +37,7 @@ if ( ! class_exists( 'WP_Post' ) ) {
 		public $post_excerpt = '';
 		public $post_date = '';
 		public $post_password = '';
+		public $post_author = 0;
 
 		public function __construct( array $props = [] ) {
 			foreach ( $props as $key => $value ) {
@@ -104,6 +105,21 @@ if ( ! class_exists( __NAMESPACE__ . '\\WP_Loupe_Indexer' ) ) {
 
 		public function prepare_document( \WP_Post $post ): array {
 			return self::$next_document;
+		}
+	}
+}
+
+// Stand-in for Loupe Search's shared visibility gate used by the abilities' tier-2 check.
+if ( ! class_exists( __NAMESPACE__ . '\\WP_Loupe_Utils' ) ) {
+	class WP_Loupe_Utils {
+		/** Toggled by tests to drive the tier-2 authorization outcome. */
+		public static bool $viewable = true;
+
+		/**
+		 * @param int|\WP_Post $post
+		 */
+		public static function is_publicly_viewable_post( $post ): bool {
+			return self::$viewable;
 		}
 	}
 }
