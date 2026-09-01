@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-01
+
+### Added
+
+- WordPress Abilities API integration. Two public, read-only abilities are
+  registered on the hub site and discoverable through the standard Abilities
+  registry: `loupe-cross-site/search` (full-text search across the combined
+  index, with an optional `blog_id` filter) and `loupe-cross-site/get-post`
+  (retrieve one publicly viewable post by its site and post ID).
+
+### Security
+
+- The combined index now excludes non-public post types, so a non-public custom
+  post type can never be mirrored into the shared, unauthenticated index.
+- The `loupe-cross-site/get-post` ability enforces per-object visibility on the
+  target post's own site (published, public post type, not password protected)
+  and returns a 404 for anything else, preventing disclosure of non-public
+  content by guessing a site/post ID pair.
+
 ## [1.1.1] - 2026-08-10
 
 ### Changed

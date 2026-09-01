@@ -47,6 +47,7 @@ All classes are in namespace `Soderlind\Plugin\LoupeCrossSiteSearch` under
 | `Mirror` | Per-site lifecycle hooks that upsert/remove documents | [includes/class-mirror.php](../includes/class-mirror.php) |
 | `Site_Lifecycle` | Purge a site's documents on delete/archive/spam/non-public | [includes/class-site-lifecycle.php](../includes/class-site-lifecycle.php) |
 | `REST_Controller` | Hub-only search endpoint; filter-AST translation, sort/facet parsing, response shaping | [includes/class-rest-controller.php](../includes/class-rest-controller.php) |
+| `Abilities` | Hub-only WordPress Abilities API integration: public `loupe-cross-site/search` + `loupe-cross-site/get-post` | [includes/class-abilities.php](../includes/class-abilities.php) |
 | `CLI` | `reindex` / `verify` / `purge` (+ per-site workers) | [includes/class-cli.php](../includes/class-cli.php) |
 | `Block` | Register the example search block (dynamic render) | [includes/class-block.php](../includes/class-block.php) |
 | Example block assets | Editor + front-end (vanilla, pageable) | [blocks/cross-site-search/](../blocks/cross-site-search) |
@@ -87,7 +88,7 @@ depends on `REST_Controller`, `CLI`, or `Block` (they are entry points).
   this is what lets any site write to it without switching context.
 - **Per-site write context.** Mirroring runs only inside a participating site's
   own request; documents are built with that site's live options/filters.
-- **Hub-only read surface.** Routes register only when
+- **Hub-only read surface.** Routes and abilities register only when
   `Settings::get_hub_blog_id() === get_current_blog_id()`
   ([class-plugin.php](../includes/class-plugin.php)).
 - **Loupe boundary.** Loupe/`prepare_document()` are invoked lazily at runtime;

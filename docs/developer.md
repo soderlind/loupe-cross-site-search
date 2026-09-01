@@ -65,6 +65,26 @@ Filterable / sortable / facetable fields are limited to `post_type`, `blog_id`,
 }
 ```
 
+## Abilities API
+
+On the hub site the plugin registers two public, read-only abilities (WordPress
+6.9+ Abilities API) so AI agents and automation can discover and run cross-site
+search without touching the REST routes directly. Both are in the
+`loupe-cross-site` ability category.
+
+| Ability | Input | Returns |
+| --- | --- | --- |
+| `loupe-cross-site/search` | `query` (required), `post_types[]`, `blog_id`, `per_page` (1–100), `page` | `hits[]` (`id`, `blog_id`, `blog_name`, `title`, `url`, `excerpt`, `post_type`, `post_date`), `total_hits`, `page`, `total_pages` |
+| `loupe-cross-site/get-post` | `blog_id` (required), `id` (required) | `id`, `blog_id`, `blog_name`, `title`, `content`, `excerpt`, `url`, `post_type`, `post_date`, `author` |
+
+Both abilities are unauthenticated by design, matching the public `/search`
+route. Authorization follows a two-tier model: the `permission_callback` is
+intentionally open (public read), and `get-post` re-checks visibility against the
+target post **on its own site** (published, public post type, not password
+protected) via `switch_to_blog()`, returning a `WP_Error` `400` (bad id) or `404`
+(unknown site or not viewable) otherwise. Results from `search` come straight
+from the combined index, which the mirror keeps free of non-public content.
+
 ## Network settings (admin)
 
 The Network Admin → Settings → Cross-Site Search screen is a WordPress React app

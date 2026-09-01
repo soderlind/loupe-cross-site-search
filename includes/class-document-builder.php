@@ -45,6 +45,11 @@ class Document_Builder {
 		if ( wp_is_post_revision( $post->ID ) || wp_is_post_autosave( $post->ID ) ) {
 			return null;
 		}
+		// Never mirror a non-public post type into the shared, unauthenticated index.
+		$pt_object = get_post_type_object( $post->post_type );
+		if ( ! $pt_object || empty( $pt_object->public ) ) {
+			return null;
+		}
 		// Respect the same password gate Loupe Search uses.
 		$index_protected = apply_filters( 'loupe_search_index_protected', empty( $post->post_password ) );
 		if ( ! $index_protected ) {

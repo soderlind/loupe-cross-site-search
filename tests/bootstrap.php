@@ -29,3 +29,4 @@ require_once $includes . 'class-settings.php';
 require_once $includes . 'class-combined-index.php';
 require_once $includes . 'class-document-builder.php';
 require_once $includes . 'class-rest-controller.php';
+require_once $includes . 'class-abilities.php';

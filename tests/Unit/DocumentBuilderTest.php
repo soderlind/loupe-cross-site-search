@@ -19,6 +19,7 @@ beforeEach( function (): void {
 	Functions\when( 'get_site_option' )->justReturn( [ 'post_types' => [ 'post' ] ] );
 	Functions\when( 'wp_is_post_revision' )->justReturn( false );
 	Functions\when( 'wp_is_post_autosave' )->justReturn( false );
+	Functions\when( 'get_post_type_object' )->justReturn( (object) [ 'public' => true ] );
 	Functions\when( 'get_bloginfo' )->justReturn( 'Site A' );
 	Functions\when( 'get_permalink' )->justReturn( 'https://a.test/hello' );
 	Functions\when( 'wp_strip_all_tags' )->alias( static fn( $s ) => strip_tags( (string) $s ) );
@@ -41,6 +42,18 @@ it( 'returns null for revisions and autosaves', function (): void {
 
 it( 'returns null for password-protected posts', function (): void {
 	$post = new WP_Post( [ 'ID' => 45, 'post_status' => 'publish', 'post_password' => 'secret' ] );
+	expect( Document_Builder::build( $post, 2 ) )->toBeNull();
+} );
+
+it( 'returns null for non-public post types', function (): void {
+	Functions\when( 'get_post_type_object' )->justReturn( (object) [ 'public' => false ] );
+	$post = new WP_Post( [ 'ID' => 45, 'post_type' => 'secret_cpt', 'post_status' => 'publish' ] );
+	expect( Document_Builder::build( $post, 2 ) )->toBeNull();
+} );
+
+it( 'returns null when the post type is not registered', function (): void {
+	Functions\when( 'get_post_type_object' )->justReturn( null );
+	$post = new WP_Post( [ 'ID' => 45, 'post_type' => 'ghost', 'post_status' => 'publish' ] );
 	expect( Document_Builder::build( $post, 2 ) )->toBeNull();
 } );
 
