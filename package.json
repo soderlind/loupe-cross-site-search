@@ -18,7 +18,7 @@
 		"test:watch": "vitest"
 	},
 	"devDependencies": {
-		"@wordpress/scripts": "^34.0.0",
+		"@wordpress/scripts": "^36.0.0",
 		"jsdom": "^25.0.0",
 		"vitest": "^3.2.6"
 	}
