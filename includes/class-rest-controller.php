@@ -95,8 +95,8 @@ class REST_Controller {
 			}
 		}
 		foreach ( [ 'highlightStartTag', 'highlightEndTag', 'cropMarker' ] as $key ) {
-			if ( isset( $body[ $key ] ) ) {
-				$options[ $key ] = (string) $body[ $key ];
+			if ( isset( $body[ $key ] ) && is_scalar( $body[ $key ] ) ) {
+				$options[ $key ] = self::sanitize_formatted( (string) $body[ $key ] );
 			}
 		}
 		if ( isset( $body['cropLength'] ) ) {
@@ -335,7 +335,7 @@ class REST_Controller {
 				'_score'          => isset( $hit['_score'] ) ? (float) $hit['_score'] : null,
 			];
 			if ( isset( $hit['_formatted'] ) && is_array( $hit['_formatted'] ) ) {
-				$item['_formatted'] = $hit['_formatted'];
+				$item['_formatted'] = self::sanitize_formatted( $hit['_formatted'] );
 			}
 			$formatted[] = $item;
 		}
@@ -401,6 +401,40 @@ class REST_Controller {
 	private function normalize_facet_value( string $value ): string {
 		if ( is_numeric( $value ) && (float) $value === floor( (float) $value ) && abs( (float) $value ) < PHP_INT_MAX ) {
 			return (string) (int) (float) $value;
+		}
+		return $value;
+	}
+
+	/**
+	 * Inline tags allowed in highlighted output.
+	 *
+	 * @return array<string,array<string,bool>>
+	 */
+	private static function highlight_allowed_tags(): array {
+		$tag = [ 'class' => true ];
+		return [
+			'mark'   => $tag,
+			'em'     => $tag,
+			'strong' => $tag,
+			'span'   => $tag,
+			'b'      => $tag,
+			'i'      => $tag,
+		];
+	}
+
+	/**
+	 * Strip everything but inline highlight tags, recursing into arrays, so
+	 * stored markup in a mirrored post can't reach the page as HTML.
+	 *
+	 * @param mixed $value Formatted value.
+	 * @return mixed
+	 */
+	private static function sanitize_formatted( $value ) {
+		if ( is_string( $value ) ) {
+			return wp_kses( $value, self::highlight_allowed_tags() );
+		}
+		if ( is_array( $value ) ) {
+			return array_map( [ self::class, 'sanitize_formatted' ], $value );
 		}
 		return $value;
 	}

@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- REST search: `_formatted` values, and the `highlightStartTag`/`highlightEndTag`/
+  `cropMarker` parameters, are filtered to inline highlight tags (`mark`, `em`,
+  `strong`, `span`, `b`, `i`), so stored markup in a mirrored post can't reach
+  the page as HTML.
+
 ## [1.1.1] - 2026-08-10
 
 ### Changed
