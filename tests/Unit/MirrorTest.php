@@ -28,6 +28,11 @@ beforeEach( function (): void {
 	$this->index  = Mockery::mock( Combined_Index::class );
 	$this->mirror = new Mirror( $this->index, [ 'post' ], 2 );
 	$this->post   = new WP_Post( [ 'ID' => 45, 'post_type' => 'post', 'post_status' => 'publish' ] );
+	$posts        = [ 45 => $this->post ];
+	$this->posts  = &$posts;
+	Functions\when( 'get_post' )->alias( static function ( $id ) use ( &$posts ) {
+		return $posts[ (int) $id ] ?? null;
+	} );
 } );
 
 afterEach( function (): void {
@@ -53,9 +58,18 @@ it( 'removes a vetoed post instead of mirroring it', function (): void {
 } );
 
 it( 'ignores drafts and uncovered post types after save', function (): void {
+	$this->posts[45] = new WP_Post( [ 'ID' => 45, 'post_type' => 'post', 'post_status' => 'draft' ] );
+	$this->posts[46] = new WP_Post( [ 'ID' => 46, 'post_type' => 'page', 'post_status' => 'publish' ] );
 	$this->index->shouldNotReceive( 'add_document', 'delete_document' );
-	$this->mirror->on_after_insert( 45, new WP_Post( [ 'ID' => 45, 'post_type' => 'post', 'post_status' => 'draft' ] ) );
-	$this->mirror->on_after_insert( 46, new WP_Post( [ 'ID' => 46, 'post_type' => 'page', 'post_status' => 'publish' ] ) );
+	$this->mirror->on_after_insert( 45, $this->posts[45] );
+	$this->mirror->on_after_insert( 46, $this->posts[46] );
+} );
+
+it( 'reloads the post so a stale published snapshot is not re-added', function (): void {
+	// A nested wp_update_post() in save_post moved the post to draft.
+	$this->posts[45] = new WP_Post( [ 'ID' => 45, 'post_type' => 'post', 'post_status' => 'draft' ] );
+	$this->index->shouldNotReceive( 'add_document', 'delete_document' );
+	$this->mirror->on_after_insert( 45, $this->post );
 } );
 
 it( 'removes a post that leaves the published state', function (): void {

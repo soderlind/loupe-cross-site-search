@@ -69,10 +69,14 @@ class Mirror {
 	/**
 	 * Add or refresh a published post once the save is complete.
 	 *
+	 * The passed object can be stale when a save_post callback ran a nested
+	 * wp_update_post(), so the post is reloaded.
+	 *
 	 * @param int      $post_id Post ID.
-	 * @param \WP_Post $post    Post object.
+	 * @param \WP_Post $post    Post object (ignored; may be stale).
 	 */
 	public function on_after_insert( int $post_id, $post ): void {
+		$post = get_post( $post_id );
 		if ( $post instanceof \WP_Post && 'publish' === $post->post_status && $this->covers( $post->post_type ) ) {
 			$this->upsert( $post );
 		}

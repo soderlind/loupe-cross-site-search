@@ -14,7 +14,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   custom rule — are never mirrored. Toggling the exclusion updates the combined
   index immediately.
 - Published posts are now mirrored on `wp_after_insert_post` (after post meta is
-  saved) rather than on `transition_post_status`.
+  saved) rather than on `transition_post_status`, and the post is reloaded so
+  a stale copy from a nested save can't re-add or overwrite it.
+- Requires Loupe Search 1.4.0 or later.
+
+### Fixed
+
+- Works with Loupe Search 1.3.2 and later, which renamed its namespace to
+  `Soderlind\Plugin\LoupeSearch` and bundles Loupe under
+  `Soderlind\Plugin\LoupeSearch\Vendor`. The add-on still looked for the old
+  class names, so its dependency check failed and it didn't load.
 
 ## [1.2.0] - 2026-09-01
 

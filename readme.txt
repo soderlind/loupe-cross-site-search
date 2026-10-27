@@ -39,7 +39,7 @@ The REST API, search block, extension filters, and WP-CLI commands are documente
 
 == Installation ==
 
-1. Install and network-activate [Loupe Search](https://wordpress.org/plugins/loupe-search/).
+1. Install and network-activate [Loupe Search](https://wordpress.org/plugins/loupe-search/) 1.4.0 or later.
 2. Upload the `loupe-cross-site-search` folder to `/wp-content/plugins/`, or install through the Plugins screen.
 3. **Network-activate** Loupe Cross-Site Search.
 4. Go to **Network Admin → Settings → Cross-Site Search** and set the hub site, participation, index language, and post types.

@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 use Brain\Monkey\Functions;
 use Soderlind\Plugin\LoupeCrossSiteSearch\Document_Builder;
-use Soderlind\Plugin\WPLoupe\WP_Loupe_Indexer;
+use Soderlind\Plugin\LoupeSearch\WP_Loupe_Indexer;
 
 beforeEach( function (): void {
 	// Reset the cached indexer between tests.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Soderlind\Plugin\LoupeCrossSiteSearch;
 
-use Soderlind\Plugin\WPLoupe\WP_Loupe_Indexer;
+use Soderlind\Plugin\LoupeSearch\WP_Loupe_Indexer;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
