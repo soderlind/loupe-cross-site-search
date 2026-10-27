@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- The combined index honours Loupe Search's `loupe_search_is_indexable` filter,
+  so posts marked as **Excluded** in Loupe Search (1.4.0+) — or vetoed by any
+  custom rule — are never mirrored. Toggling the exclusion updates the combined
+  index immediately.
+- Published posts are now mirrored on `wp_after_insert_post` (after post meta is
+  saved) rather than on `transition_post_status`.
+
 ## [1.2.0] - 2026-09-01
 
 ### Added

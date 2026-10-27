@@ -55,6 +55,11 @@ class Document_Builder {
 		if ( ! $index_protected ) {
 			return null;
 		}
+		// Respect Loupe Search's per-post vetoes: Excluded posts, bbPress posts in
+		// private forums, and any site-specific rule.
+		if ( ! apply_filters( 'loupe_search_is_indexable', true, $post ) ) {
+			return null;
+		}
 
 		$prepared = self::prepared( $post, $blog_id );
 
