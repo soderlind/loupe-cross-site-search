@@ -119,10 +119,9 @@ it( 'resolves post types, rejecting unknown ones', function (): void {
 } );
 
 it( 'keeps only inline highlight tags in _formatted, including nested arrays', function (): void {
-	// Minimal wp_kses: drop disallowed tags (and script bodies), keep allowed ones bare.
+	// Minimal wp_kses: like the real one, drop disallowed tags but keep their text.
 	Functions\when( 'wp_kses' )->alias(
 		static function ( string $html, array $allowed ): string {
-			$html = (string) preg_replace( '#<script\b[^>]*>.*?</script>#is', '', $html );
 			return (string) preg_replace_callback(
 				'#<(/?)([a-z0-9]+)\b[^>]*>#i',
 				static fn( $m ) => isset( $allowed[ strtolower( $m[2] ) ] ) ? '<' . $m[1] . strtolower( $m[2] ) . '>' : '',
@@ -152,6 +151,6 @@ it( 'keeps only inline highlight tags in _formatted, including nested arrays', f
 	$response  = call_private( new REST_Controller(), 'format_response', [ $result, 1, 10, 0, null ] );
 	$formatted = $response->data['hits'][0]['_formatted'];
 
-	expect( $formatted['post_title'] )->toBe( '<mark>Hello</mark> ' );
+	expect( $formatted['post_title'] )->toBe( '<mark>Hello</mark> alert(1)' );
 	expect( $formatted['post_content'][0] )->toBe( '<mark>hi</mark> there' );
 } );
