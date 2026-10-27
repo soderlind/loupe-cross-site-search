@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 use Brain\Monkey\Functions;
 use Soderlind\Plugin\LoupeCrossSiteSearch\Abilities;
-use Soderlind\Plugin\WPLoupe\WP_Loupe_Utils;
+use Soderlind\Plugin\LoupeSearch\WP_Loupe_Utils;
 
 beforeEach( function (): void {
 	WP_Loupe_Utils::$viewable = true;

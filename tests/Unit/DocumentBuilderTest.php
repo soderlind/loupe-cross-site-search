@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 use Brain\Monkey\Functions;
 use Soderlind\Plugin\LoupeCrossSiteSearch\Document_Builder;
-use Soderlind\Plugin\WPLoupe\WP_Loupe_Indexer;
+use Soderlind\Plugin\LoupeSearch\WP_Loupe_Indexer;
 
 beforeEach( function (): void {
 	// Reset the cached indexer between tests.
@@ -98,4 +98,12 @@ it( 'falls back to raw post fields when preparation yields nothing', function ()
 	expect( $doc['post_title'] )->toBe( 'Raw Title' );
 	expect( $doc['post_content'] )->toBe( 'Raw body' ); // tags stripped.
 	expect( $doc['post_date'] )->toBe( '2021-02-02 00:00:00' );
+} );
+
+it( 'returns null when a Loupe Search veto rejects the post (e.g. an Excluded post)', function (): void {
+	Functions\when( 'apply_filters' )->alias(
+		static fn( $tag, $value ) => 'loupe_search_is_indexable' === $tag ? false : $value
+	);
+	$post = new WP_Post( [ 'ID' => 45, 'post_type' => 'post', 'post_status' => 'publish' ] );
+	expect( Document_Builder::build( $post, 2 ) )->toBeNull();
 } );

@@ -98,11 +98,15 @@ depends on `REST_Controller`, `CLI`, or `Block` (they are entry points).
 
 ### 5.1 Mirror on content change (participating site)
 
-1. Editor saves a post; `transition_post_status` fires.
-2. `Mirror::on_transition()` — if the post type is covered: publish ⇒ upsert;
-   leaving publish ⇒ remove. `deleted_post` ⇒ `Mirror::on_deleted()` removes.
+1. Editor saves a post. `Mirror::on_after_insert()` (`wp_after_insert_post`,
+   after meta is saved) upserts a published post of a covered type;
+   `Mirror::on_transition()` removes a post leaving publish; `deleted_post` ⇒
+   `Mirror::on_deleted()` removes. Toggling Loupe Search's Excluded-post flag
+   (`_loupe_search_exclude` meta) ⇒ `Mirror::on_meta_change()` re-evaluates it.
+2. An upsert whose `build()` returns `null` removes the document instead.
 3. `Document_Builder::build()` guards (published, not revision/autosave, not
-   password-protected), reuses `WP_Loupe_Indexer::prepare_document()`, projects
+   password-protected, not vetoed by the `loupe_search_is_indexable` filter —
+   which is how Loupe Search's Excluded posts stay out), reuses `WP_Loupe_Indexer::prepare_document()`, projects
    to the fixed core schema, sets id `{blog_id}_{post_id}` and `blog_id`/
    `blog_name`/`url`.
 4. `Combined_Index::add_document()` / `delete_document()` writes to the per-type
@@ -143,7 +147,7 @@ depends on `REST_Controller`, `CLI`, or `Block` (they are entry points).
 | Invariant | Where enforced | Test |
 | --- | --- | --- |
 | Combined-index ids are `{blog_id}_{post_id}` (no cross-site collision) | `Document_Builder::document_id()` | [DocumentBuilderTest.php](../tests/Unit/DocumentBuilderTest.php) |
-| Only published, non-revision, non-password posts are indexed | `Document_Builder::build()` guards | [DocumentBuilderTest.php](../tests/Unit/DocumentBuilderTest.php) |
+| Only published, non-revision, non-password, non-vetoed (`loupe_search_is_indexable`) posts are indexed | `Document_Builder::build()` guards | [DocumentBuilderTest.php](../tests/Unit/DocumentBuilderTest.php), [MirrorTest.php](../tests/Unit/MirrorTest.php) |
 | Participation = public sites unless allow/block override; never archived/spam/deleted | `Participation::is_participating()` | [ParticipationTest.php](../tests/Unit/ParticipationTest.php) |
 | Filter/sort/facet only on `post_type`, `blog_id`, `blog_name`, `post_date` | `REST_Controller::build_predicate()` / `parse_*()` | [RestFilterTest.php](../tests/Unit/RestFilterTest.php) |
 | Settings are sanitized; post types never empty; language is a 2-letter code | `Settings::get()` | [SettingsTest.php](../tests/Unit/SettingsTest.php) |

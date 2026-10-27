@@ -87,7 +87,7 @@ if ( ! class_exists( 'WP_REST_Response' ) ) {
 
 }
 
-namespace Soderlind\Plugin\WPLoupe {
+namespace Soderlind\Plugin\LoupeSearch {
 
 // Stand-in for Loupe Search's indexer; the plugin only calls prepare_document().
 if ( ! class_exists( __NAMESPACE__ . '\\WP_Loupe_Indexer' ) ) {

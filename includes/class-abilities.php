@@ -250,7 +250,7 @@ class Abilities {
 		try {
 			// Tier-2 gate: reuse Loupe Search's single visibility source of truth,
 			// evaluated in the target site's context.
-			if ( ! \Soderlind\Plugin\WPLoupe\WP_Loupe_Utils::is_publicly_viewable_post( $post_id ) ) {
+			if ( ! \Soderlind\Plugin\LoupeSearch\WP_Loupe_Utils::is_publicly_viewable_post( $post_id ) ) {
 				return new \WP_Error( 'post_not_found', __( 'Post not found or not publicly accessible.', 'loupe-cross-site-search' ), [ 'status' => 404 ] );
 			}
 
