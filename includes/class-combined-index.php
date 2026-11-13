@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace Soderlind\Plugin\LoupeCrossSiteSearch;
 
-use Loupe\Loupe\Config\TypoTolerance;
-use Loupe\Loupe\Configuration;
-use Loupe\Loupe\LoupeFactory;
-use Loupe\Loupe\SearchParameters;
+use Soderlind\Plugin\LoupeSearch\Vendor\Loupe\Loupe\Config\TypoTolerance;
+use Soderlind\Plugin\LoupeSearch\Vendor\Loupe\Loupe\Configuration;
+use Soderlind\Plugin\LoupeSearch\Vendor\Loupe\Loupe\LoupeFactory;
+use Soderlind\Plugin\LoupeSearch\Vendor\Loupe\Loupe\SearchParameters;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -41,7 +41,7 @@ class Combined_Index {
 
 	private string $language;
 
-	/** @var array<string,\Loupe\Loupe\Loupe> */
+	/** @var array<string,\Soderlind\Plugin\LoupeSearch\Vendor\Loupe\Loupe\Loupe> */
 	private array $loupe = [];
 
 	/**
@@ -88,7 +88,7 @@ class Combined_Index {
 			->withTypoTolerance( TypoTolerance::create() );
 	}
 
-	private function loupe( string $post_type ): \Loupe\Loupe\Loupe {
+	private function loupe( string $post_type ): \Soderlind\Plugin\LoupeSearch\Vendor\Loupe\Loupe\Loupe {
 		if ( ! isset( $this->loupe[ $post_type ] ) ) {
 			$factory                     = new LoupeFactory();
 			$this->loupe[ $post_type ]   = $factory->create( $this->db_path( $post_type ), $this->config() );

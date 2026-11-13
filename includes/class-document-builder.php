@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Soderlind\Plugin\LoupeCrossSiteSearch;
 
-use Soderlind\Plugin\WPLoupe\WP_Loupe_Indexer;
+use Soderlind\Plugin\LoupeSearch\WP_Loupe_Indexer;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -53,6 +53,11 @@ class Document_Builder {
 		// Respect the same password gate Loupe Search uses.
 		$index_protected = apply_filters( 'loupe_search_index_protected', empty( $post->post_password ) );
 		if ( ! $index_protected ) {
+			return null;
+		}
+		// Respect Loupe Search's per-post vetoes: Excluded posts, bbPress posts in
+		// private forums, and any site-specific rule.
+		if ( ! apply_filters( 'loupe_search_is_indexable', true, $post ) ) {
 			return null;
 		}
 

@@ -78,8 +78,8 @@ class Plugin {
 	 * Loupe Search must be loaded (its indexer + the bundled Loupe library).
 	 */
 	private function dependency_met(): bool {
-		return class_exists( '\\Soderlind\\Plugin\\WPLoupe\\WP_Loupe_Indexer' )
-			&& class_exists( '\\Loupe\\Loupe\\LoupeFactory' );
+		return class_exists( '\\Soderlind\\Plugin\\LoupeSearch\\WP_Loupe_Indexer' )
+			&& class_exists( '\\Soderlind\\Plugin\\LoupeSearch\\Vendor\\Loupe\\Loupe\\LoupeFactory' );
 	}
 
 	public function notice_requires_multisite(): void {
