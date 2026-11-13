@@ -30,7 +30,7 @@ in [`CONTEXT.md`](CONTEXT.md).
 
 ## Requirements
 
-- WordPress **multisite** 6.9+
+- WordPress **multisite** 7.0+
 - [Loupe Search](https://github.com/soderlind/loupe-search) 1.4.0 or later, active on the network
 - PHP 8.3+ with `pdo_sqlite`, `intl`, `mbstring` (same as Loupe Search)
 

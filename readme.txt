@@ -1,11 +1,11 @@
 === Loupe Cross-Site Search ===
 Contributors: perssoderlind
 Tags: multisite, search, loupe, cross-site, network
-Requires at least: 6.9
+Requires at least: 7.0
 Tested up to: 6.9
 Requires PHP: 8.3
 Requires Plugins: loupe-search
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -92,6 +92,12 @@ Content is mirrored in real time as posts are published, updated, unpublished, t
 The block queries the hub site's endpoint. On subdomain networks this is a cross-origin request and may be blocked by CORS unless the block is on the hub site (or you add CORS headers). Subdirectory networks are same-origin and work out of the box.
 
 == Changelog ==
+
+= 1.3.0 =
+* Requires WordPress 7.0 or later, and Loupe Search 1.4.0 or later.
+* Changed: Posts excluded in Loupe Search, or vetoed by the `loupe_search_is_indexable` filter, are never mirrored to the combined index.
+* Changed: Published posts are mirrored after post meta is saved.
+* Fixed: Works with the renamed Loupe Search namespace (1.3.2+).
 
 = 1.2.0 =
 * Added: WordPress Abilities API integration. Two public, read-only abilities are registered on the hub site: `loupe-cross-site/search` (full-text search across the combined index) and `loupe-cross-site/get-post` (retrieve one publicly viewable post by site and post ID).

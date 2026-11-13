@@ -10,7 +10,7 @@
  * Plugin Name:       Loupe Cross-Site Search
  * Plugin URI:        https://github.com/soderlind/loupe-cross-site-search
  * Description:       Cross-site search for WordPress multisite. Maintains one combined Loupe index across participating sites and exposes a search endpoint on a designated hub site. Add-on to Loupe Search.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Author:            Per Soderlind
  * Author URI:        https://soderlind.no
  * License:           GPL-2.0+
@@ -18,7 +18,7 @@
  * Text Domain:       loupe-cross-site-search
  * Domain Path:       /languages
  * Network:           true
- * Requires at least: 6.9
+ * Requires at least: 7.0
  * Requires PHP:      8.3
  * Requires Plugins:  loupe-search
  */
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'LCSS_FILE', __FILE__ );
-define( 'LCSS_VERSION', '1.2.0' );
+define( 'LCSS_VERSION', '1.3.0' );
 define( 'LCSS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LCSS_URL', plugin_dir_url( __FILE__ ) );
 
