@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-11-17
+
+### Security
+
+- Updated the build tooling to clear all open Dependabot alerts: `@wordpress/scripts`
+  34 → 37, `vitest` 3 → 5 and `jsdom` 25 → 29, plus npm `overrides` for patched
+  `serialize-javascript`, `markdownlint-cli`, `katex` and `minimatch`. These are
+  development dependencies only; the shipped plugin is unaffected.
+- `npm audit` now reports 0 vulnerabilities.
+
+### Changed
+
+- Building the plugin now requires Node.js 22.22 or later; the release workflows
+  use Node.js 24.
+- Added a Dependabot configuration that groups npm development dependency updates
+  into a single weekly pull request.
+
 ## [1.3.0] - 2026-11-13
 
 ### Changed
@@ -127,7 +144,8 @@ Initial public release.
   `loupe_cross_site_db_path`.
 - Test suites: PHP (Pest + Brain Monkey) and JavaScript (Vitest + jsdom).
 
-[Unreleased]: https://github.com/soderlind/loupe-cross-site-search/compare/1.3.0...HEAD
+[Unreleased]: https://github.com/soderlind/loupe-cross-site-search/compare/1.3.1...HEAD
+[1.3.1]: https://github.com/soderlind/loupe-cross-site-search/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/soderlind/loupe-cross-site-search/compare/1.2.0...1.3.0
 [1.1.0]: https://github.com/soderlind/loupe-cross-site-search/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/soderlind/loupe-cross-site-search/compare/0.2.0...1.0.0

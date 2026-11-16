@@ -5,7 +5,7 @@ Requires at least: 7.0
 Tested up to: 6.9
 Requires PHP: 8.3
 Requires Plugins: loupe-search
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPL-2.0-or-later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -92,6 +92,10 @@ Content is mirrored in real time as posts are published, updated, unpublished, t
 The block queries the hub site's endpoint. On subdomain networks this is a cross-origin request and may be blocked by CORS unless the block is on the hub site (or you add CORS headers). Subdirectory networks are same-origin and work out of the box.
 
 == Changelog ==
+
+= 1.3.1 =
+* Security: Updated the development build tooling to clear all open Dependabot alerts. The shipped plugin is unaffected.
+* Changed: Building the plugin now requires Node.js 22.22 or later.
 
 = 1.3.0 =
 * Requires WordPress 7.0 or later, and Loupe Search 1.4.0 or later.
