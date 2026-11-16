@@ -19,8 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Building the plugin now requires Node.js 22.22 or later; the release workflows
-  use Node.js 24.
+- Building the plugin now requires Node.js 22.22.2+, 24.15+ or 26+ (the range
+  supported by `@wordpress/scripts` 37); the release workflows use Node.js 24.
 - Added a Dependabot configuration that groups npm development dependency updates
   into a single weekly pull request.
 

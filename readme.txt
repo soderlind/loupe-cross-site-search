@@ -95,7 +95,7 @@ The block queries the hub site's endpoint. On subdomain networks this is a cross
 
 = 1.3.1 =
 * Security: Updated the development build tooling to clear all open Dependabot alerts. The shipped plugin is unaffected.
-* Changed: Building the plugin now requires Node.js 22.22 or later.
+* Changed: Building the plugin now requires Node.js 22.22.2+, 24.15+ or 26+.
 
 = 1.3.0 =
 * Requires WordPress 7.0 or later, and Loupe Search 1.4.0 or later.
